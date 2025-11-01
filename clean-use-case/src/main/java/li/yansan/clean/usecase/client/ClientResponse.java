@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
 
-public record ClientResponse<TBody>(@NotNull @Valid TBody body) {
-  public ClientResponse(TBody body) {
+public record ClientResponse<UBody>(@NotNull @Valid UBody body) {
+  public ClientResponse(UBody body) {
     this.body = body;
     validate();
   }
 
-  public ClientResponse(Convertible<TBody> body) {
+  public ClientResponse(Convertible<UBody> body) {
     this(body.convert());
   }
 

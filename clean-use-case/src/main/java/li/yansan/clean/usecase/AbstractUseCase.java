@@ -2,15 +2,14 @@ package li.yansan.clean.usecase;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public abstract class AbstractUseCase<I, O>
-    implements UseCase<UseCaseRequest<I>, UseCaseResponse<O>> {
+public abstract class AbstractUseCase<UPayload, UBody> implements UseCase<UPayload, UBody> {
 
   @Override
-  public UseCaseResponse<O> execute(UseCaseRequest<I> request) {
+  public UseCaseResponse<UBody> execute(UseCaseRequest<UPayload> request) {
     notNull(request, "UseCaseRequest can not be null.");
-    O output = doExecute(request.actor(), request.body());
+    UBody output = doExecute(request.actor(), request.payload());
     return new UseCaseResponse<>(output);
   }
 
-  protected abstract O doExecute(Actor actor, I input);
+  protected abstract UBody doExecute(Actor actor, UPayload input);
 }

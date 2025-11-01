@@ -2,16 +2,15 @@ package li.yansan.clean.usecase.messaging;
 
 import li.yansan.clean.usecase.Actor;
 
-public abstract class AbstractMessenger<I, O>
-    implements Messenger<MessengerRequest<I>, MessengerResponse<O>> {
+public abstract class AbstractMessenger<UPayload, TBody> implements Messenger<UPayload, TBody> {
   @Override
-  public MessengerResponse<O> send(MessengerRequest<I> request) {
+  public MessengerResponse<TBody> send(MessengerRequest<UPayload> request) {
     if (request == null) {
       throw new IllegalArgumentException("MessengerRequest can not be null.");
     }
-    O output = doSend(request.sender(), request.message());
+    TBody output = doSend(request.sender(), request.payload());
     return new MessengerResponse<>(output);
   }
 
-  protected abstract O doSend(Actor actor, I message);
+  protected abstract TBody doSend(Actor actor, UPayload message);
 }

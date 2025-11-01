@@ -6,23 +6,23 @@ import li.yansan.clean.commons.convert.Converter;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
 
-public record UseCaseRequest<TBody>(@NotNull Actor actor, @Valid @NotNull TBody body) {
-  public UseCaseRequest(Actor actor, TBody body) {
+public record UseCaseRequest<UPayload>(@NotNull Actor actor, @Valid @NotNull UPayload payload) {
+  public UseCaseRequest(Actor actor, UPayload payload) {
     this.actor = actor;
-    this.body = body;
+    this.payload = payload;
     validate();
   }
 
-  public UseCaseRequest(Actor actor, Convertible<TBody> body) {
-    this(actor, body.convert());
+  public UseCaseRequest(Actor actor, Convertible<UPayload> payload) {
+    this(actor, payload.convert());
   }
 
-  public <T> UseCaseRequest(Converter<T, Actor> converter, T user, Convertible<TBody> body) {
-    this(converter.convert(user), body.convert());
+  public <T> UseCaseRequest(Converter<T, Actor> converter, T user, Convertible<UPayload> payload) {
+    this(converter.convert(user), payload.convert());
   }
 
-  public <T> UseCaseRequest(Converter<T, Actor> converter, T user, TBody body) {
-    this(converter.convert(user), body);
+  public <T> UseCaseRequest(Converter<T, Actor> converter, T user, UPayload payload) {
+    this(converter.convert(user), payload);
   }
 
   private void validate() {

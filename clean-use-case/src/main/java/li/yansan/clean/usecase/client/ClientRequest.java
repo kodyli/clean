@@ -3,13 +3,13 @@ package li.yansan.clean.usecase.client;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.usecase.Actor;
 
-public record ClientRequest<TBody>(Actor actor, TBody body) {
-  public ClientRequest(Actor actor, TBody body) {
+public record ClientRequest<UPayload>(Actor actor, UPayload payload) {
+  public ClientRequest(Actor actor, UPayload payload) {
     this.actor = actor;
-    this.body = body;
+    this.payload = payload;
   }
 
-  public ClientRequest(Actor actor, Convertible<TBody> body) {
-    this(actor, body.convert());
+  public ClientRequest(Actor actor, Convertible<UPayload> payload) {
+    this(actor, payload.convert());
   }
 }

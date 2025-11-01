@@ -2,15 +2,15 @@ package li.yansan.clean.usecase.client;
 
 import li.yansan.clean.usecase.Actor;
 
-public abstract class AbstractClient<I, O> implements Client<ClientRequest<I>, ClientResponse<O>> {
+public abstract class AbstractClient<UPayload, UBody> implements Client<UPayload, UBody> {
   @Override
-  public ClientResponse<O> send(ClientRequest<I> request) {
+  public ClientResponse<UBody> send(ClientRequest<UPayload> request) {
     if (request == null) {
       throw new IllegalArgumentException("ClientRequest can not be null.");
     }
-    O output = doSend(request.actor(), request.body());
+    UBody output = doSend(request.actor(), request.payload());
     return new ClientResponse<>(output);
   }
 
-  protected abstract O doSend(Actor actor, I input);
+  protected abstract UBody doSend(Actor actor, UPayload input);
 }

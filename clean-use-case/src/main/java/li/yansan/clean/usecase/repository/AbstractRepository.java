@@ -2,18 +2,17 @@ package li.yansan.clean.usecase.repository;
 
 import li.yansan.clean.usecase.Actor;
 
-public abstract class AbstractRepository<I, O>
-    implements Repository<RepositoryRequest<I>, RepositoryResponse<O>> {
+public abstract class AbstractRepository<UPayload, UBody> implements Repository<UPayload, UBody> {
   @Override
-  public RepositoryResponse<O> send(RepositoryRequest<I> request) {
+  public RepositoryResponse<UBody> send(RepositoryRequest<UPayload> request) {
     if (request == null) {
       throw new IllegalArgumentException("RepositoryRequest can not be null.");
     }
-    O output = doSend(request.sender(), request.body());
+    UBody output = doSend(request.sender(), request.payload());
     return new RepositoryResponse<>(output);
   }
 
-  protected abstract O doSend(Actor actor, I input);
+  protected abstract UBody doSend(Actor actor, UPayload payload);
 
   protected abstract Class<?> getGroup();
 }

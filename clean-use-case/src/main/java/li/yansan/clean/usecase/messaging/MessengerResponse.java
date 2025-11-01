@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
 
-public record MessengerResponse<TBody>(@NotNull @Valid TBody body) {
-  public MessengerResponse(TBody body) {
+public record MessengerResponse<UBody>(@NotNull @Valid UBody body) {
+  public MessengerResponse(UBody body) {
     this.body = body;
     validate();
   }
 
-  public MessengerResponse(Convertible<TBody> body) {
+  public MessengerResponse(Convertible<UBody> body) {
     this(body.convert());
   }
 

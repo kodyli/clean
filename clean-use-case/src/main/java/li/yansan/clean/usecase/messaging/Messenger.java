@@ -1,5 +1,5 @@
 package li.yansan.clean.usecase.messaging;
 
-public interface Messenger<UReq, URes> {
-  URes send(UReq uReq);
+public interface Messenger<UPayload, UBody> {
+  MessengerResponse<UBody> send(MessengerRequest<UPayload> request);
 }

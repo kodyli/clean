@@ -3,14 +3,14 @@ package li.yansan.clean.usecase.repository;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.usecase.Actor;
 
-public record RepositoryRequest<TBody>(Actor sender, TBody body) {
-  public RepositoryRequest(Actor sender, TBody body) {
+public record RepositoryRequest<UPayload>(Actor sender, UPayload payload) {
+  public RepositoryRequest(Actor sender, UPayload payload) {
     this.sender = sender;
-    this.body = body;
+    this.payload = payload;
     validate();
   }
 
-  public RepositoryRequest(Actor sender, Convertible<TBody> body) {
+  public RepositoryRequest(Actor sender, Convertible<UPayload> body) {
     this(sender, body.convert());
   }
 
@@ -18,7 +18,7 @@ public record RepositoryRequest<TBody>(Actor sender, TBody body) {
     if (sender == null) {
       throw new IllegalArgumentException();
     }
-    if (body == null) {
+    if (payload == null) {
       throw new IllegalArgumentException();
     }
   }

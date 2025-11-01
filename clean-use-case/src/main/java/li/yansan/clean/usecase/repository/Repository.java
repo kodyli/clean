@@ -1,5 +1,5 @@
 package li.yansan.clean.usecase.repository;
 
-public interface Repository<UReq, URes> {
-  URes send(UReq uReq);
+public interface Repository<UPayload, UBody> {
+  RepositoryResponse<UBody> send(RepositoryRequest<UPayload> request);
 }

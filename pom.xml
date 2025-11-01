@@ -6,7 +6,7 @@
 
     <groupId>li.yansan.clean</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Clean</name>
     <description>A project following Clean Architecture system design.</description>

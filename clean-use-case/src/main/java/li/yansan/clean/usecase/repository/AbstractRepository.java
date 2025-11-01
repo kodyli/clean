@@ -13,6 +13,4 @@ public abstract class AbstractRepository<UPayload, UBody> implements Repository<
   }
 
   protected abstract UBody doSend(Actor actor, UPayload payload);
-
-  protected abstract Class<?> getGroup();
 }

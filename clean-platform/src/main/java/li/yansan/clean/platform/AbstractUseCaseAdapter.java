@@ -7,29 +7,29 @@ import li.yansan.clean.usecase.UseCase;
 import li.yansan.clean.usecase.UseCaseRequest;
 import li.yansan.clean.usecase.UseCaseResponse;
 
-public abstract class AbstractUseCaseAdapter<TI, TO, UI, UO> {
-  public TO execute(Principal user, TI tReq) {
-    Actor actor = getActor(user);
-    UI uReq = convertRequest(tReq);
-    UseCase<UseCaseRequest<UI>, UseCaseResponse<UO>> delegate = getDelegate();
-    if (actor == null || uReq == null || delegate == null) {
+public abstract class AbstractUseCaseAdapter<TI, TO, UPayload, UBody> {
+  public TO execute(Principal user, TI input) {
+    Actor actor = convertActor(user);
+    UPayload payload = convertRequest(input);
+    UseCase<UPayload, UBody> delegate = getDelegate();
+    if (actor == null || payload == null || delegate == null) {
       throw new IllegalArgumentException();
     }
-    UseCaseResponse<UO> uRes = delegate.execute(new UseCaseRequest<>(actor, uReq));
-    TO tRes = convertResponse(uRes.body());
-    validate(tRes);
-    return tRes;
+    UseCaseResponse<UBody> uRes = delegate.execute(new UseCaseRequest<>(actor, payload));
+    TO output = convertResponse(uRes.body());
+    validate(output);
+    return output;
   }
 
-  private void validate(TO tRes) {
-    Validator.validate(tRes);
+  private void validate(TO output) {
+    Validator.validate(output);
   }
 
-  protected abstract UseCase<UseCaseRequest<UI>, UseCaseResponse<UO>> getDelegate();
+  protected abstract UseCase<UPayload, UBody> getDelegate();
 
-  protected abstract Actor getActor(Principal user);
+  protected abstract Actor convertActor(Principal principal);
 
-  protected abstract UI convertRequest(TI tReq);
+  protected abstract UPayload convertRequest(TI input);
 
-  protected abstract TO convertResponse(UO URes);
+  protected abstract TO convertResponse(UBody body);
 }

@@ -9,14 +9,14 @@ import li.yansan.clean.usecase.UseCaseResponse;
 
 public abstract class AbstractUseCaseAdapter<TI, TO, UPayload, UBody> {
   public TO execute(Principal user, TI input) {
-    Actor actor = convertActor(user);
-    UPayload payload = convertRequest(input);
+    Actor actor = convertToActor(user);
+    UPayload payload = convertToPayload(input);
     UseCase<UPayload, UBody> delegate = getDelegate();
     if (actor == null || payload == null || delegate == null) {
       throw new IllegalArgumentException();
     }
     UseCaseResponse<UBody> uRes = delegate.execute(new UseCaseRequest<>(actor, payload));
-    TO output = convertResponse(uRes.body());
+    TO output = convertBody(uRes.body());
     validate(output);
     return output;
   }
@@ -27,9 +27,9 @@ public abstract class AbstractUseCaseAdapter<TI, TO, UPayload, UBody> {
 
   protected abstract UseCase<UPayload, UBody> getDelegate();
 
-  protected abstract Actor convertActor(Principal principal);
+  protected abstract Actor convertToActor(Principal principal);
 
-  protected abstract UPayload convertRequest(TI input);
+  protected abstract UPayload convertToPayload(TI input);
 
-  protected abstract TO convertResponse(UBody body);
+  protected abstract TO convertBody(UBody body);
 }

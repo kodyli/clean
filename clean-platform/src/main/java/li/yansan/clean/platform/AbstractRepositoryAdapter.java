@@ -9,13 +9,13 @@ public abstract class AbstractRepositoryAdapter<TI, TO, UPayload, UBody>
 
   @Override
   protected UBody doSend(Actor actor, UPayload payload) {
-    TI input = convertRequest(actor, payload);
+    TI input = convertPayload(actor, payload);
     validate(input);
     TO output = process(input);
-    return convertResponse(output);
+    return convertToBody(output);
   }
 
-  protected abstract TI convertRequest(Actor actor, UPayload payload);
+  protected abstract TI convertPayload(Actor actor, UPayload payload);
 
   private void validate(TI input) {
     Validator.validate(input);
@@ -23,5 +23,5 @@ public abstract class AbstractRepositoryAdapter<TI, TO, UPayload, UBody>
 
   protected abstract TO process(TI input);
 
-  protected abstract UBody convertResponse(TO output);
+  protected abstract UBody convertToBody(TO output);
 }

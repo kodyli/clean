@@ -1,4 +1,4 @@
-# Clean Architecture Principles
+# Clean Architecture Principles - Updating
 
 ## Overview
 
@@ -51,6 +51,7 @@ Clean Architecture, as described by Uncle Bob (Robert C. Martin), ensures that t
 
 Clean Architecture ensures that business rules are central and protected from technology changes. The system is: framework-independent, testable, UI-independent, database-independent, and independent of external agencies, providing long-term maintainability and flexibility.
 
+![Application Design](./clean.png)
 ~~~
 myapp/
 ├── pom.xml
@@ -65,17 +66,21 @@ myapp/
 │    │         └── place/
 │    │              ├── AbstractPlaceOrderUseCaseAdapter
 │    │              ├── repository/
-│    │              │    └── AbstractOrderRepositoryAdapter.java
+│    │              │    ├── AbstractOrderRepositoryAdapter.java
+│    │              │    └── InMemoryOrderRepository.java
 │    │              ├── client/
-│    │              │    └── AbstractPaymentClientAdapter.java
+│    │              │    ├── AbstractPaymentClientAdapter.java
+│    │              │    └── LocalPaymentClient.java
 │    │              └── messaging/
-│    │                   └── AbstractEventPublisherAdapter.java
+│    │                   ├── AbstractOrderCreatedMessengerAdapter.java
+│    │                   └── SystemOutOrderCreatedMessenger.java
 │    └── usecase/
 │         └── order/
 │              └── place/
 │                   ├── Order.java
 │                   ├── ID.java
 │                   ├── PlaceOrderUseCase.java
+│                   ├── DefaultPlaceOrderUseCase.java
 │                   ├── mapper/
 │                   │    └── PlaceOrderMapper.java
 │                   ├── repository/
@@ -83,7 +88,7 @@ myapp/
 │                   ├── client/
 │                   │    └── PaymentClient.java
 │                   └── messaging/
-│                        └── EventPublisher.java
+│                        └── OrderCreatedMessenger.java
 │
 ├── myapp-cancle-order/
 │    ├── pom.xml
@@ -104,11 +109,11 @@ myapp/
 │         │    │    ├── PlaceOrderController.java
 │         │    │    ├── PlaceOrderService.java
 │         │    │    ├── repository/
-│         │    │    │    └── OrderRepositoryAdapter.java
+│         │    │    │    └── JpaOrderRepository.java
 │         │    │    ├── client/
-│         │    │    │    └── PaymentClientAdapter.java
+│         │    │    │    └── PaypalPaymentClient.java
 │         │    │    └── messaging/
-│         │    │         └── EventPublisherAdapter.java
+│         │    │         └── KafkaOrderCreatedMessenger.java
 │         │    ├── cancel
 │         │    └── search
 │         └── customer
@@ -118,12 +123,13 @@ myapp/
 │    └── platform/
 │         ├── order/
 │         │    ├── place/
+│         │    │    ├── PlaceOrderService.java
 │         │    │    ├── repository/
-│         │    │    │    └── OrderRepositoryAdapter.java
+│         │    │    │    └── JpaOrderRepository.java
 │         │    │    ├── client/
-│         │    │    │    └── PaymentClientAdapter.java
+│         │    │    │    └── PaypalPaymentClient.java
 │         │    │    └── messaging/
-│         │    │         └── EventPublisherAdapter.java
+│         │    │         └── KafkaOrderCreatedMessenger.java
 │         │    ├── cancel
 │         │    └── search
 │         └── customer
@@ -180,8 +186,8 @@ The top-level structure includes:
         - `OrderRepository`, `PaymentClient`, `Messenger` – boundary interfaces.
     - `platform/order/place/` — abstract adapters bridging the use case layer with the outside world.
         - `AbstractOrderRepositoryAdapter` – implements `OrderRepository` and extends `AbstractRepositoryAdapter`.
-        - `AbstractPaymentClientAdapter` – implements `PaymentClient`.
-        - `AbstractMessengerAdapter` – implements `Messenger`.
+        - `AbstractPaymentClientAdapter` – implements `PaymentClient` and extends `AbstractClientAdapter`.
+        - `AbstractOrderCreatedMessengerAdapter` – implements `OrderCreatedMessenger`  and extends `AbstractMessengerAdapter`.
 
 ### myapp-app-web / myapp-app-console
 - **Purpose:** Concrete runtime applications implementing the abstract adapters from the use case modules.

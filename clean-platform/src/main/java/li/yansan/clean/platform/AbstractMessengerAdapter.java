@@ -2,22 +2,26 @@ package li.yansan.clean.platform;
 
 import li.yansan.clean.commons.validation.Validator;
 import li.yansan.clean.usecase.Actor;
-import li.yansan.clean.usecase.messaging.AbstractMessenger;
+import li.yansan.clean.usecase.messaging.Messenger;
+import li.yansan.clean.usecase.messaging.MessengerRequest;
+import li.yansan.clean.usecase.messaging.MessengerResponse;
 
 public abstract class AbstractMessengerAdapter<TI, TO, UPayload, UBody>
-    extends AbstractMessenger<UPayload, UBody> {
-
-  @Override
-  protected UBody doSend(Actor actor, UPayload payload) {
-    TI input = convertPayload(actor, payload);
+    implements Messenger<UPayload, UBody> {
+  public MessengerResponse<UBody> send(MessengerRequest<UPayload> request) {
+    if (request == null) {
+      throw new IllegalArgumentException("MessengerRequest can not be null.");
+    }
+    TI input = convertPayload(request.sender(), request.payload());
     validate(input);
     TO output = process(input);
-    return convertToBody(output);
+    UBody body = convertToBody(output);
+    return new MessengerResponse<>(body);
   }
 
   protected abstract TI convertPayload(Actor actor, UPayload payload);
 
-  private void validate(TI input) {
+  protected void validate(TI input) {
     Validator.validate(input);
   }
 

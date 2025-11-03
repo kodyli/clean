@@ -16,12 +16,15 @@ public abstract class AbstractUseCaseAdapter<TI, TO, UPayload, UBody> {
       throw new IllegalArgumentException();
     }
     UseCaseResponse<UBody> uRes = delegate.execute(new UseCaseRequest<>(actor, payload));
+    if (uRes == null) {
+      throw new IllegalArgumentException("UseCaseResponse can not be null.");
+    }
     TO output = convertBody(uRes.body());
     validate(output);
     return output;
   }
 
-  private void validate(TO output) {
+  protected void validate(TO output) {
     Validator.validate(output);
   }
 

@@ -2,22 +2,26 @@ package li.yansan.clean.platform;
 
 import li.yansan.clean.commons.validation.Validator;
 import li.yansan.clean.usecase.Actor;
-import li.yansan.clean.usecase.client.AbstractClient;
+import li.yansan.clean.usecase.client.Client;
+import li.yansan.clean.usecase.client.ClientRequest;
+import li.yansan.clean.usecase.client.ClientResponse;
 
 public abstract class AbstractClientAdapter<TI, TO, UPayload, UBody>
-    extends AbstractClient<UPayload, UBody> {
-
-  @Override
-  protected UBody doSend(Actor actor, UPayload payload) {
-    TI input = convertPayload(actor, payload);
+    implements Client<UPayload, UBody> {
+  public ClientResponse<UBody> send(ClientRequest<UPayload> request) {
+    if (request == null) {
+      throw new IllegalArgumentException("ClientRequest can not be null.");
+    }
+    TI input = convertPayload(request.actor(), request.payload());
     validate(input);
     TO output = process(input);
-    return convertToBody(output);
+    UBody body = convertToBody(output);
+    return new ClientResponse<>(body);
   }
 
   protected abstract TI convertPayload(Actor actor, UPayload payload);
 
-  private void validate(TI input) {
+  protected void validate(TI input) {
     Validator.validate(input);
   }
 

@@ -2,22 +2,26 @@ package li.yansan.clean.platform;
 
 import li.yansan.clean.commons.validation.Validator;
 import li.yansan.clean.usecase.Actor;
-import li.yansan.clean.usecase.repository.AbstractRepository;
+import li.yansan.clean.usecase.repository.Repository;
+import li.yansan.clean.usecase.repository.RepositoryRequest;
+import li.yansan.clean.usecase.repository.RepositoryResponse;
 
 public abstract class AbstractRepositoryAdapter<TI, TO, UPayload, UBody>
-    extends AbstractRepository<UPayload, UBody> {
-
-  @Override
-  protected UBody doSend(Actor actor, UPayload payload) {
-    TI input = convertPayload(actor, payload);
+    implements Repository<UPayload, UBody> {
+  public RepositoryResponse<UBody> send(RepositoryRequest<UPayload> request) {
+    if (request == null) {
+      throw new IllegalArgumentException("RepositoryRequest can not be null.");
+    }
+    TI input = convertPayload(request.sender(), request.payload());
     validate(input);
     TO output = process(input);
-    return convertToBody(output);
+    UBody body = convertToBody(output);
+    return new RepositoryResponse<>(body);
   }
 
   protected abstract TI convertPayload(Actor actor, UPayload payload);
 
-  private void validate(TI input) {
+  protected void validate(TI input) {
     Validator.validate(input);
   }
 

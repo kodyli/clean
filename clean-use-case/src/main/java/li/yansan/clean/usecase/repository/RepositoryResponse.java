@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import li.yansan.clean.commons.validation.Validator;
 
-public record RepositoryResponse<UBody>(@NotNull @Valid UBody body) {
+public record RepositoryResponse<UBody>(@Valid @NotNull UBody body) {
   public RepositoryResponse(UBody body) {
     this.body = body;
     validate();

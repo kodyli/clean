@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
 
-public record MessengerResponse<UBody>(@NotNull @Valid UBody body) {
+public record MessengerResponse<UBody>(@Valid @NotNull UBody body) {
   public MessengerResponse(UBody body) {
     this.body = body;
     validate();

@@ -6,7 +6,8 @@ import li.yansan.clean.commons.convert.Converter;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
 
-public record UseCaseRequest<UPayload>(@NotNull Actor actor, @Valid @NotNull UPayload payload) {
+public record UseCaseRequest<UPayload>(
+    @Valid @NotNull Actor actor, @Valid @NotNull UPayload payload) {
   public UseCaseRequest(Actor actor, UPayload payload) {
     this.actor = actor;
     this.payload = payload;

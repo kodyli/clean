@@ -10,32 +10,17 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>clean-core</artifactId>
+    <artifactId>clean-application</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- Clean Commons: Shared utilities, validation, and common types -->
-        <!-- Foundation layer used by all other modules -->
+        <!-- Scope 'provided' - expected to be provided by the runtime environment -->
         <dependency>
             <groupId>li.yansan.clean</groupId>
             <artifactId>clean-commons</artifactId>
             <version>${project.parent.version}</version>
-        </dependency>
-
-        <!-- Clean Application: Application layer with use cases and business logic -->
-        <!-- Defines interfaces that adapters implement -->
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-application</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <!-- Clean Adapter: Infrastructure layer with external system integrations -->
-        <!-- Implements application interfaces for databases, APIs, etc. -->
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-adapter</artifactId>
-            <version>${project.parent.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -6,15 +6,17 @@ import java.lang.annotation.*;
 import li.yansan.clean.commons.validation.internal.constraintvalidators.SSNValidator;
 
 @Documented
-@Constraint(validatedBy = {SSNValidator.class})
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Constraint(validatedBy = { SSNValidator.class })
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SSN {
-  String message() default "Not valid SSN.";
 
-  Class<?>[] groups() default {};
+	String message() default "Not valid SSN.";
 
-  Class<? extends Payload>[] payload() default {};
+	Class<?>[] groups() default {};
 
-  String pattern() default "^(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$";
+	Class<? extends Payload>[] payload() default {};
+
+	String pattern() default "^(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$";
+
 }

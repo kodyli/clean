@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
@@ -12,9 +13,10 @@
     <description>A project following Clean Architecture system design.</description>
     <modules>
         <module>clean-commons</module>
-        <module>clean-use-case</module>
-        <module>clean-platform</module>
+        <module>clean-application</module>
+        <module>clean-adapter</module>
         <module>clean-core</module>
+        <module>clean-test</module>
     </modules>
 
     <properties>
@@ -24,25 +26,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-        </dependencies>
-    </dependencyManagement>
     <build>
         <pluginManagement>
             <plugins>
+                <!-- Maven Compiler Plugin: Compiles Java source code -->
+                <!-- Uses 'release' flag for proper cross-compilation to Java 21 -->
+                <!-- Preserves parameter names via 'parameters' for reflection-based frameworks -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <!-- Use 'release' instead of 'source' and 'target' for better compatibility -->
+                        <release>${java.version}</release>
                         <compilerArgs>
+                            <!-- Preserve parameter names in bytecode for Spring, Jackson, etc. -->
                             <arg>-parameters</arg>
                         </compilerArgs>
                     </configuration>
                 </plugin>
+
+                <!-- Spring Java Format Plugin: Enforces Spring code style conventions -->
+                <!-- Validates code formatting during the validate phase -->
+                <!-- Run 'mvn spring-javaformat:apply' to auto-format code -->
                 <plugin>
                     <groupId>io.spring.javaformat</groupId>
                     <artifactId>spring-javaformat-maven-plugin</artifactId>

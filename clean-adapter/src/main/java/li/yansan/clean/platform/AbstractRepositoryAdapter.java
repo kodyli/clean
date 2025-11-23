@@ -2,11 +2,11 @@ package li.yansan.clean.platform;
 
 import java.util.Objects;
 
+import li.yansan.clean.application.Actor;
+import li.yansan.clean.application.repository.Repository;
+import li.yansan.clean.application.repository.RepositoryRequest;
+import li.yansan.clean.application.repository.RepositoryResponse;
 import li.yansan.clean.commons.validation.Validator;
-import li.yansan.clean.usecase.Actor;
-import li.yansan.clean.usecase.repository.Repository;
-import li.yansan.clean.usecase.repository.RepositoryRequest;
-import li.yansan.clean.usecase.repository.RepositoryResponse;
 
 /**
  * Abstract adapter that orchestrates the interaction with a database.

@@ -1,9 +1,9 @@
-package li.yansan.clean.usecase.repository;
+package li.yansan.clean.application.repository;
 
 import jakarta.validation.constraints.NotNull;
+import li.yansan.clean.application.Actor;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
-import li.yansan.clean.usecase.Actor;
 
 public record RepositoryRequest<UPayload>(@NotNull Actor sender, @NotNull UPayload payload) {
 	public RepositoryRequest(Actor sender, UPayload payload) {

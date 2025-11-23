@@ -1,8 +1,8 @@
-package li.yansan.clean.usecase;
+package li.yansan.clean.application;
 
-import li.yansan.clean.usecase.client.Client;
-import li.yansan.clean.usecase.messaging.Messenger;
-import li.yansan.clean.usecase.repository.Repository;
+import li.yansan.clean.application.client.Client;
+import li.yansan.clean.application.messaging.Messenger;
+import li.yansan.clean.application.repository.Repository;
 
 /**
  * Defines the contract for a business Use Case.

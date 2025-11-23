@@ -1,11 +1,12 @@
 package li.yansan.clean.platform;
 
 import java.security.Principal;
+
+import li.yansan.clean.application.Actor;
+import li.yansan.clean.application.UseCase;
+import li.yansan.clean.application.UseCaseRequest;
+import li.yansan.clean.application.UseCaseResponse;
 import li.yansan.clean.commons.validation.Validator;
-import li.yansan.clean.usecase.Actor;
-import li.yansan.clean.usecase.UseCase;
-import li.yansan.clean.usecase.UseCaseRequest;
-import li.yansan.clean.usecase.UseCaseResponse;
 
 /**
  * Abstract adapter that orchestrates the execution of a Use Case from an external

@@ -1,4 +1,4 @@
-package li.yansan.clean.usecase.messaging;
+package li.yansan.clean.application.messaging;
 
 public interface Messenger<UPayload, UBody> {
 

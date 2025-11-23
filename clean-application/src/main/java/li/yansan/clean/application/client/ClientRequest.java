@@ -1,9 +1,9 @@
-package li.yansan.clean.usecase.client;
+package li.yansan.clean.application.client;
 
 import jakarta.validation.constraints.NotNull;
+import li.yansan.clean.application.Actor;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
-import li.yansan.clean.usecase.Actor;
 
 public record ClientRequest<UPayload>(@NotNull Actor actor, @NotNull UPayload payload) {
 	public ClientRequest(Actor actor, UPayload payload) {

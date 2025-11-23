@@ -1,4 +1,4 @@
-package li.yansan.clean.usecase.repository;
+package li.yansan.clean.application.repository;
 
 /**
  * Defines the contract for interacting with the database.

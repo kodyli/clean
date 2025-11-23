@@ -1,9 +1,9 @@
-package li.yansan.clean.usecase.messaging;
+package li.yansan.clean.application.messaging;
 
 import jakarta.validation.constraints.NotNull;
+import li.yansan.clean.application.Actor;
 import li.yansan.clean.commons.convert.Convertible;
 import li.yansan.clean.commons.validation.Validator;
-import li.yansan.clean.usecase.Actor;
 
 public record MessengerRequest<UPayload>(@NotNull Actor sender, @NotNull UPayload payload) {
 	public MessengerRequest(Actor sender, UPayload payload) {

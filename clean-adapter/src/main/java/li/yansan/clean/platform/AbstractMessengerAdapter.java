@@ -1,10 +1,10 @@
 package li.yansan.clean.platform;
 
+import li.yansan.clean.application.Actor;
+import li.yansan.clean.application.messaging.Messenger;
+import li.yansan.clean.application.messaging.MessengerRequest;
+import li.yansan.clean.application.messaging.MessengerResponse;
 import li.yansan.clean.commons.validation.Validator;
-import li.yansan.clean.usecase.Actor;
-import li.yansan.clean.usecase.messaging.Messenger;
-import li.yansan.clean.usecase.messaging.MessengerRequest;
-import li.yansan.clean.usecase.messaging.MessengerResponse;
 
 public abstract class AbstractMessengerAdapter<TI, TO, UPayload, UBody> implements Messenger<UPayload, UBody> {
 

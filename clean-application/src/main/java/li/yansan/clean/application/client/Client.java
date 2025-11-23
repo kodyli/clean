@@ -1,4 +1,4 @@
-package li.yansan.clean.usecase.client;
+package li.yansan.clean.application.client;
 
 public interface Client<UPayload, UBody> {
 

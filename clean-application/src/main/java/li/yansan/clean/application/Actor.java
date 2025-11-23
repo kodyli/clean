@@ -1,4 +1,4 @@
-package li.yansan.clean.usecase;
+package li.yansan.clean.application;
 
 public class Actor {
 

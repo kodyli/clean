@@ -14,7 +14,7 @@
     <modules>
         <module>clean-commons</module>
         <module>clean-application</module>
-        <module>clean-adapter</module>
+        <module>clean-platform</module>
         <module>clean-core</module>
         <module>clean-test</module>
     </modules>

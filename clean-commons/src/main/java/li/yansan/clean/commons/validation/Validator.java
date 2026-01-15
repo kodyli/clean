@@ -10,6 +10,7 @@ import java.util.Set;
 public abstract class Validator {
 
 	private static final ValidatorFactory VALIDATOR_FACTORY;
+
 	private static final jakarta.validation.Validator VALIDATOR;
 
 	static {

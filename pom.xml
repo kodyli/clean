@@ -17,6 +17,7 @@
         <module>clean-platform</module>
         <module>clean-core</module>
         <module>clean-test</module>
+        <module>clean-spec</module>
     </modules>
 
     <properties>

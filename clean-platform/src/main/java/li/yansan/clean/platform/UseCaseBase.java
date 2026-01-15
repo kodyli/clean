@@ -35,7 +35,36 @@ import li.yansan.clean.commons.validation.Validator;
  * @param <TO> the type of the output (e.g., Response DTO)
  * @param <UPayload> the type of the use case payload
  * @param <UBody> the type of the use case response body
+ * @deprecated Since 2.0.0. The driving side (e.g., REST controllers, GraphQL resolvers)
+ * can directly use domain types ({@code UPayload} and {@code UBody}) from the use case
+ * without needing this adapter layer. This eliminates unnecessary type conversions and
+ * simplifies the architecture.
+ * <p>
+ * <b>Migration:</b> Instead of extending {@code UseCaseBase}, inject the {@link UseCase}
+ * directly and call {@code execute()} with domain types:
+ *
+ * <pre>
+ *             {@code
+ * &#64;RestController
+ * &#64;RequestMapping("/api/customers")
+ * public class CustomerController {
+ *     private final CreateCustomerUseCase useCase;
+ *
+ *     &#64;PostMapping
+ *     public CustomerResponse create(@AuthenticationPrincipal Principal user,
+ *                                      &#64;RequestBody CustomerPayload payload) {
+ *         Actor actor = new Actor(user.getName());
+ *         UseCaseRequest<CustomerPayload> request = new UseCaseRequest<>(actor, payload);
+ *         UseCaseResponse<Customer> response = useCase.execute(request);
+ *         return new CustomerResponse(response.body());
+ *     }
+ * }
+ *             }
+ *             </pre>
+ *
+ * Will be removed in version 3.0.0.
  */
+@Deprecated(since = "2.0.0", forRemoval = true)
 public abstract class UseCaseBase<TI, TO, UPayload, UBody> {
 
 	public TO execute(Principal user, TI input) {

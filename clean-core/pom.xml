@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>clean-core</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <dependencies>
         <!-- Clean Commons: Shared utilities, validation, and common types -->

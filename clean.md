@@ -6,16 +6,29 @@
 
 | Section | What You'll Learn |
 |:---|:---|
-| §1 Philosophy | Why this architecture exists and its intellectual roots |
-| §2 The Rule | The one rule you must never break |
-| §3 Layers | What each concentric ring does |
-| §4 Feature Folders | How the code is physically organized |
-| §5 Playbook | Step-by-step guide for adding features |
-| §6 Testing | How to test at each layer |
+| §1 Motivation | Why single-module Clean Architecture falls short |
+| §2 Philosophy | The key principles and intellectual roots |
+| §3 The Rule | The unidirectional dependency constraint |
+| §4 Layers | What each concentric ring does |
+| §5 Feature Folders | How the code is physically organized |
+| §6 Playbook | Step-by-step guide for adding features |
+| §7 Testing | How to test at each layer |
 
 ---
 
-## 1. The Philosophy: Purpose over Platforms
+## 1. Why This Project Exists
+
+Most Clean Architecture examples explain the concepts correctly but implement everything inside a **single project**. Business code and platform code live side by side in the same module.
+
+**The Core Problem: Reusability** — When business logic and infrastructure are packaged together, the business layer cannot be reused independently. Extracting core logic into a console app, a different framework, or another organization's system requires untangling infrastructure concerns first. Every reuse effort drags framework dependencies along with it. Business rules should be portable—but single-module packaging defeats that.
+
+**A Secondary Concern: Enforcement** — Single-module projects can use tools like ArchUnit to catch dependency violations at test time. However, these are runtime checks—they catch violations *after* the code compiles, not *before*. Multi-module separation moves enforcement to the compiler itself.
+
+**The Solution: Multi-Module Structure** — This project uses a Maven multi-module structure to make business logic **structurally reusable** and architectural violations **mechanically difficult**. Each Use Case is its own module, strictly separating `application` (pure business logic) from `platform` (adapter implementations). Delivery mechanisms live in separate runtime modules. Because modules are physically separated, the business layer can be published, shared, and reused independently—without dragging any framework along with it.
+
+---
+
+## 2. The Philosophy: Business First
 
 The core goal of this project is to ensure that the system is **Independent of Frameworks, UI, and Databases**. By placing the business logic at the center, we ensure the following **Key Principles**:
 
@@ -36,13 +49,13 @@ In this project, Jacobson's influence is most visible in:
 
 ---
 
-## 2. The Rule: Total Isolation
+## 3. The Rule: Unidirectional Dependency Constraint
 
 The system is organized into concentric circles. The overriding rule is: **Source code dependencies can only point inwards.**
 
 ### Core Constraints
 - **Mechanisms vs. Policies**: Outer circles (Mechanisms) represent *how* things are done (Web, DB); inner circles (Policies) represent *what* is being achieved.
-- **No Name Referencing**: Inner layers must not mention any names (classes, variables) from outer layers.
+- **No Compile-Time Dependency Inward to Outward**: Inner layers must not have any compile-time dependency on classes, variables, or types from outer layers.
 - **Data Format Isolation**: No technical data formats (e.g., Spring or Hibernate objects) should ever leak into the inner circles.
 
 ### Implementation: Dependency Inversion via Ports & Adapters
@@ -56,27 +69,88 @@ When data crosses a layer boundary, it must take the form most convenient for th
 - JPA Entities, Spring objects, and HTTP-specific types must NEVER leak into the `application` package.
 - Adapters are responsible for converting between external formats and application-level data structures.
 
+### Transaction Boundary Ownership
+
+Use Cases must **never** open or manage transactions. Transactional demarcation belongs to the delivery mechanism (e.g., a Service class in the Spring module), which wraps the Use Case invocation. This ensures business logic remains portable and reusable outside any specific framework.
+
 ---
 
-## 3. The Concentric Layers: Roles and Responsibilities
+## 4. The Concentric Layers: Roles and Responsibilities
 
-**These are the conceptual layers of the architecture, representing distinct roles and responsibilities.** While we package by feature physically (see Section 4), logically the code is separated into these rings.
-
-### Entities
-Entities encapsulate the **most general business rules**—those that would exist even if no particular application consumed them. They are the least likely to change. In this project, Entities are core domain objects (e.g., `Order`, `ID`) representing business concepts independent of any specific use case or delivery mechanism.
+**These are the conceptual layers of the architecture, representing distinct roles and responsibilities.** While we package by feature physically (see Section 5), logically the code is separated into these rings.
 
 ### Use Cases
 Following Jacobson's philosophy, Use Cases are the system's **reason for existing**. Each Use Case represents a single user goal and contains the **application-specific business rules** needed to achieve it. Use Cases orchestrate Entities and coordinate with external systems through Ports (interfaces) to fulfill that goal. They are isolated from externalities but respond to changes in operation logic.
 
+**Responsibilities:**
+1. Take input
+2. Validate input
+3. Validate business rules
+4. Manipulate model state
+5. Return output
+
+### Entities
+
+Uncle Bob defines Entities as encapsulating the **most general business rules**—the least likely to change. This project adopts a **Use Case–Scoped** approach: each feature module owns its own domain model.
+
+An `Order` inside `myapp-place-order` is not a global domain abstraction—it is the domain model *as understood by that use case*. Different use cases may represent the same real-world concept differently, shaped by what that specific use case needs to accomplish. This eliminates coupling between features and keeps each module independently deployable and reusable.
+
 ### Interface Adapters
 Adapters convert data between the formats convenient for use cases/entities and those required by **external agencies**. This layer contains MVC structures (Controllers, Presenters), persistence mapping, and is responsible for **handling database transactions**.
+
+They act as the translators of the system, bridge-building between high-level business logic and low-level technical infrastructure. Depending on the direction of communication, adapters are categorized as either **Driving** or **Driven**.
+
+#### Driving Adapters (Inbound)
+Driving adapters wrap around the use cases and provide a way for the outside world to interact with the application. They translate external requests (like HTTP or CLI commands) into the application's input model.
+
+**Web Adapter responsibilities:**
+1. Map HTTP request to Java objects
+2. Perform authorization checks
+3. Map input to the input model of the use case
+4. Call the use case adapter
+5. Map output of the use case back to HTTP
+6. Return HTTP response
+
+**Use Case Adapter responsibilities:**
+1. Take input
+2. Start a transaction
+3. Call the wrapped use case
+4. Commit or rollback the transaction
+5. Return output
+
+#### Driven Adapters (Outbound)
+Driven adapters are used by the application to talk to the outside world—whether to persist data, send messages, or call third-party services. They translate the application's output into the specific format required by the external technology.
+
+**Persistence Adapter responsibilities:**
+1. Take input
+2. Map input into database format
+3. Send input to the database
+4. Map database output into application format
+5. Validate output
+6. Return output
+
+**Messenger Adapter responsibilities:**
+1. Take input
+2. Map input into messenger format
+3. Send input to the messenger
+4. Map messenger output into application format
+5. Validate output
+6. Return output
+
+**Client Adapter responsibilities:**
+1. Take input
+2. Map input into 3rd party API format
+3. Send input to 3rd party API
+4. Map 3rd party API output into application format
+5. Validate output
+6. Return output
 
 ### Frameworks and Drivers
 The outermost layer of "Glue Code." This is where the actual Web Frameworks and Databases live. We keep them here so they do the least harm to the core logic.
 
 ---
 
-## 4. The Physical Map: Feature Folders
+## 5. The Physical Map: Feature Folders
 
 ### Why Feature Folders?
 
@@ -115,7 +189,7 @@ myapp/
 │    ├── pom.xml
 │    └── order/
 │        └── create/
-│             ├── platform/              # ← OUTER CIRCLE (adapters and fakes)
+│             ├── platform/                         # ← OUTER CIRCLE (adapters and fakes)
 │             │     ├── repository/
 │             │     │    ├── BaseOrderRepository.java
 │             │     │    └── InMemoryOrderRepository.java
@@ -125,11 +199,11 @@ myapp/
 │             │     └── messaging/
 │             │          ├── BaseOrderCreatedMessenger.java  
 │             │          └── SystemOutOrderCreatedMessenger.java
-│             └── application/           # ← INNER CIRCLE (pure Java, no frameworks)
+│             └── application/                      # ← INNER CIRCLE (pure Java, no frameworks)
 │                   ├── Order.java
 │                   ├── ID.java
 │                   ├── PlaceOrderUseCase.java
-│                   ├── DefaultPlaceOrderUseCase.java
+│                   ├── PlaceOrderUseCaseImpl.java
 │                   ├── repository/
 │                   │    └── OrderRepository.java
 │                   ├── client/
@@ -151,14 +225,14 @@ myapp/
 │    ├── order/
 │    │     ├── place/
 │    │     │    └── platform/
-│    │     │        ├── PlaceOrderController.java
-│    │     │        ├── PlaceOrderService.java
+│    │     │        ├── PlaceOrderController.java  # ← Web Adapter
+│    │     │        ├── PlaceOrderService.java     # ← Use Case Adapter: implements Use Case using composite design pattern
 │    │     │        ├── repository/
-│    │     │        │    └── JpaOrderRepository.java
+│    │     │        │    └── JpaOrderRepository.java    # ← Persistence Adapter
 │    │     │        ├── client/
-│    │     │        │    └── PaypalPaymentClient.java
+│    │     │        │    └── PaypalPaymentClient.java   # ← External System Adapter
 │    │     │        └── messaging/
-│    │     │             └── KafkaOrderCreatedMessenger.java
+│    │     │             └── KafkaOrderCreatedMessenger.java  # ← Messaging Adapter
 │    │     ├── cancel/
 │    │     └── search/
 │    └── customer/
@@ -173,7 +247,7 @@ myapp/
      └── ArchitectureTest.java
 ~~~
 
-## 5. Developer Playbook: Extending the System
+## 6. Developer Playbook: Extending the System
 
 ### How to Add a New Use Case
 1.  **Define the Domain**: Create Entities/Value Objects in the `application` package.
@@ -181,17 +255,17 @@ myapp/
 3.  **Implement the Use Case**: Write **exactly one** UseCase class in the `application` package.
 4.  **Bridge the Boundary**: Create abstract adapter classes in the `platform` package that implement your ports.
 5.  **Add to Aggregator**: Add the new use case to the `myapp-core` module.
-6.  **Test**: See Section 6 for the full testing strategy.
+6.  **Test**: See Section 7 for the full testing strategy.
 
 ### How to Implement a Runtime (Web/Console)
 1.  **Implement the Adapters**: Inside your delivery mechanism module (e.g., `myapp-spring-api`), provide concrete classes extending the abstract adapters.
 2.  **Maintain Encapsulation**: Keep classes package-private between layers.
 3.  **Injection**: Wire these adapters using Spring/Application framework only in this layer.
-4.  **Test**: See Section 6 for the full testing strategy.
+4.  **Test**: See Section 7 for the full testing strategy.
 
 ---
 
-## 6. Testing Strategy
+## 7. Testing Strategy
 
 Testability is one of the five foundational principles of Clean Architecture. Each layer has its own testing approach:
 

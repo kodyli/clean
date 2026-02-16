@@ -22,9 +22,7 @@ Most Clean Architecture examples explain the concepts correctly but implement ev
 
 **The Core Problem: Reusability** — When business logic and infrastructure are packaged together, the business layer cannot be reused independently. Extracting core logic into a console app, a different framework, or another organization's system requires untangling infrastructure concerns first. Every reuse effort drags framework dependencies along with it. Business rules should be portable—but single-module packaging defeats that.
 
-**A Secondary Concern: Enforcement** — Single-module projects can use tools like ArchUnit to catch dependency violations at test time. However, these are runtime checks—they catch violations *after* the code compiles, not *before*. Multi-module separation moves enforcement to the compiler itself.
-
-**The Solution: Multi-Module Structure** — This project uses a Maven multi-module structure to make business logic **structurally reusable** and architectural violations **mechanically difficult**. Each Use Case is its own module, strictly separating `application` (pure business logic) from `platform` (adapter implementations). Delivery mechanisms live in separate runtime modules. Because modules are physically separated, the business layer can be published, shared, and reused independently—without dragging any framework along with it.
+**The Solution: Multi-Module Structure** — This project uses a Maven multi-module structure to make business logic **structurally reusable** and architectural violations **physically impossible**. Each Use Case is its own module, strictly separating `application` (pure business logic) from `platform` (adapter implementations). Delivery mechanisms live in separate runtime modules. Because modules are physically separated, the business layer can be published, shared, and reused independently—without dragging any framework along with it.
 
 ---
 
@@ -151,6 +149,7 @@ The outermost layer of "Glue Code." This is where the actual Web Frameworks and 
 ---
 
 ## 5. The Physical Map: Feature Folders
+We strictly follow the Package by Feature pattern.
 
 ### Why Feature Folders?
 
@@ -158,7 +157,7 @@ Uncle Bob's *Screaming Architecture* principle states that a project's structure
 
 Jacobson reinforces this: if Use Cases drive the architecture, the folder structure should reflect the use cases, not the technical layers.
 
-Feature Folders also make the codebase **AI-friendly**: all context for a single business capability—entities, use cases, ports, and adapters—lives in one folder. This allows AI tools to load the complete context of a feature in a single pass and immediately understand the business intent without navigating across scattered technical layers.
+Feature Folders also make the codebase **AI-friendly**: all context for a single business capability—entities, use cases, entities, and adapters—lives in one folder. You can feed a single folder to an LLM to understand a complete business capability without it needing to scan the whole repo.
 
 The `application` / `platform` split also naturally **divides work by risk**. In the `application` layer, **humans lead and AI assists**—humans drive domain decisions, define business rules, and design use cases, while AI accelerates the implementation of pure, side-effect-free Java code. In the `platform` layer, **AI leads and humans review**—AI generates the repetitive adapter boilerplate, while humans verify the infrastructure boundary for security, performance, and correctness against real external systems.
 
@@ -249,19 +248,20 @@ myapp/
 
 ## 6. Developer Playbook: Extending the System
 
-### How to Add a New Use Case
-1.  **Define the Domain**: Create Entities/Value Objects in the `application` package.
-2.  **Define the Ports**: Create interfaces for what the use case needs (Repository, Client, Messenger).
-3.  **Implement the Use Case**: Write **exactly one** UseCase class in the `application` package.
-4.  **Bridge the Boundary**: Create abstract adapter classes in the `platform` package that implement your ports.
-5.  **Add to Aggregator**: Add the new use case to the `myapp-core` module.
-6.  **Test**: See Section 7 for the full testing strategy.
+### Step 1: Add a New Use Case (Application)
+1.  **Create the Module**: Create a new Maven module in the `myapp` directory with the naming pattern `myapp-[feature-name]`.
+2.  **Define the Use Case**: Create a UseCase interface in the `application` package. This is the contract between the use case and the outside world.
+3.  **Discover and Define the Domain**: Discover and create Entities/Value Objects in the `application` package. These are pure Java classes representing your business rules.
+4.  **Discover and Define the Adapters**: Discover and create interfaces for what the use case needs (Repository, Client, Messenger) within the `application` package.
+5.  **Implement the Use Case**: Write **exactly one** UseCase implementation class in the `application` package. Orchestrate your entities and use your adapters.
+6.  **Test**: See Section 7 for the use case testing strategy.
 
-### How to Implement a Runtime (Web/Console)
-1.  **Implement the Adapters**: Inside your delivery mechanism module (e.g., `myapp-spring-api`), provide concrete classes extending the abstract adapters.
-2.  **Maintain Encapsulation**: Keep classes package-private between layers.
-3.  **Injection**: Wire these adapters using Spring/Application framework only in this layer.
-4.  **Test**: See Section 7 for the full testing strategy.
+### Step 2: Implement the Platform (Platform)
+1.  **Bridge the Boundary**: Create abstract adapter classes in the `platform` package that implement your adapters (from Step 1). 
+2.  **Add to Aggregator**: Add the new use case module to the `myapp-core` aggregator.
+3.  **Implement Runtime Adapters**: Inside your delivery mechanism module (e.g., `myapp-spring-api`), provide concrete classes extending the abstract adapters (e.g., a JPA repository or a REST client).
+4.  **Wiring**: Wire these adapters using your framework (e.g., Spring Beans) ONLY in the delivery/platform layer.
+5.  **Test**: See Section 7 for the platform testing strategy.
 
 ---
 

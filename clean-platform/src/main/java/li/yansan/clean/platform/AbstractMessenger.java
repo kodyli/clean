@@ -37,7 +37,7 @@ import li.yansan.clean.commons.validation.Validator;
  * @param <UPayload> the type of the use case payload
  * @param <UBody> the type of the use case response body
  */
-public abstract class MessengerBase<TI, TO, UPayload, UBody> implements Messenger<UPayload, UBody> {
+public abstract class AbstractMessenger<TI, TO, UPayload, UBody> implements Messenger<UPayload, UBody> {
 
 	public MessengerResponse<UBody> send(MessengerRequest<UPayload> request) {
 		Objects.requireNonNull(request, "MessengerRequest can not be null.");

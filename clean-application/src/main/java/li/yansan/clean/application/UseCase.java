@@ -1,5 +1,6 @@
 package li.yansan.clean.application;
 
+import java.util.Objects;
 import li.yansan.clean.application.client.Client;
 import li.yansan.clean.application.messaging.Messenger;
 import li.yansan.clean.application.repository.Repository;
@@ -37,5 +38,11 @@ public interface UseCase<UPayload, UBody> {
 	 * @return the response containing the result of the execution
 	 */
 	UseCaseResponse<UBody> execute(UseCaseRequest<UPayload> request);
+
+	default UBody execute(Actor actor, UPayload payload) {
+		UseCaseResponse<UBody> useCaseResponse = execute(new UseCaseRequest<UPayload>(actor, payload));
+		Objects.requireNonNull(useCaseResponse, "useCaseResponse cannot be null.");
+		return useCaseResponse.body();
+	}
 
 }

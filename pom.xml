@@ -10,62 +10,99 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Clean</name>
-    <description>A project following Clean Architecture system design.</description>
+    <description>Building Clean Architecture applications</description>
     <modules>
         <module>clean-commons</module>
         <module>clean-application</module>
         <module>clean-platform</module>
         <module>clean-core</module>
         <module>clean-test</module>
-        <module>clean-spec</module>
     </modules>
 
     <properties>
         <java.version>21</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
+
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+        <maven-checkstyle-plugin.failsOnError>true</maven-checkstyle-plugin.failsOnError>
+        <maven-checkstyle-plugin.failOnViolation>true</maven-checkstyle-plugin.failOnViolation>
+        <puppycrawl-tools-checkstyle.version>9.3</puppycrawl-tools-checkstyle.version>
+        <spring-javaformat-checkstyle.version>0.0.47</spring-javaformat-checkstyle.version>
     </properties>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <!-- Maven Compiler Plugin: Compiles Java source code -->
-                <!-- Uses 'release' flag for proper cross-compilation to Java 21 -->
-                <!-- Preserves parameter names via 'parameters' for reflection-based frameworks -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
-                    <configuration>
-                        <!-- Use 'release' instead of 'source' and 'target' for better compatibility -->
-                        <release>${java.version}</release>
-                        <compilerArgs>
-                            <!-- Preserve parameter names in bytecode for Spring, Jackson, etc. -->
-                            <arg>-parameters</arg>
-                        </compilerArgs>
-                    </configuration>
-                </plugin>
-
-                <!-- Spring Java Format Plugin: Enforces Spring code style conventions -->
-                <!-- Validates code formatting during the validate phase -->
-                <!-- Run 'mvn spring-javaformat:apply' to auto-format code -->
-                <plugin>
-                    <groupId>io.spring.javaformat</groupId>
-                    <artifactId>spring-javaformat-maven-plugin</artifactId>
-                    <version>0.0.47</version>
-                    <executions>
-                        <execution>
-                            <phase>validate</phase>
-                            <inherited>true</inherited>
-                            <goals>
-                                <goal>validate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <!-- Maven Compiler Plugin: Compiles Java source code -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <!-- Use 'release' instead of 'source' and 'target' for better compatibility -->
+                    <release>${java.version}</release>
+                    <compilerArgs>
+                        <!-- Preserve parameter names in bytecode for Spring, Jackson, etc. -->
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <!-- Spring Java Format Plugin: Enforces Spring code style conventions -->
+            <plugin>
+                <groupId>io.spring.javaformat</groupId>
+                <artifactId>spring-javaformat-maven-plugin</artifactId>
+                <version>${spring-javaformat-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <!-- Validates code formatting during the validate phase -->
+                        <!-- Run 'mvn spring-javaformat:apply' to auto-format code -->
+                        <phase>validate</phase>
+                        <inherited>true</inherited>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${puppycrawl-tools-checkstyle.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-checkstyle</artifactId>
+                        <version>${spring-javaformat-checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>checkstyle-validation</id>
+                        <phase>process-sources</phase>
+                        <inherited>true</inherited>
+                        <configuration>
+                            <configLocation>${maven.multiModuleProjectDirectory}/src/checkstyle/checkstyle.xml</configLocation>
+                            <headerLocation>${maven.multiModuleProjectDirectory}/src/checkstyle/checkstyle-header.txt</headerLocation>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>${maven-checkstyle-plugin.failsOnError}</failsOnError>
+                            <failOnViolation>${maven-checkstyle-plugin.failOnViolation}</failOnViolation>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <distributionManagement>

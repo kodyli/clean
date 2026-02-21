@@ -1,7 +1,6 @@
 package li.yansan.clean.test.internal.rules;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.lang.ArchRule;
 
@@ -13,7 +12,8 @@ public class EncapsulationRule implements Rule {
 	}
 
 	protected ArchRule getRule() {
-		return classes().that()
+		return ArchRuleDefinition.classes()
+			.that()
 			.resideInAPackage("..platform..")
 			.and()
 			.areTopLevelClasses()

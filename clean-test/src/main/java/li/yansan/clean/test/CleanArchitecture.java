@@ -1,9 +1,11 @@
 package li.yansan.clean.test;
 
+import java.util.List;
+
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
-import java.util.List;
+
 import li.yansan.clean.test.internal.rules.EncapsulationRule;
 import li.yansan.clean.test.internal.rules.LayerDependencyRule;
 import li.yansan.clean.test.internal.rules.Rule;
@@ -22,11 +24,11 @@ class CleanArchitecture {
 
 	private final JavaClasses classes;
 
-	public CleanArchitecture(String rootPackage) {
+	CleanArchitecture(String rootPackage) {
 		// 1. Import all classes from the current project for scanning
-		classes = new ClassFileImporter().withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+		this.classes = new ClassFileImporter().withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
 			.importPackages(rootPackage);
-		rules = List.of(new LayerDependencyRule(), new EncapsulationRule());
+		this.rules = List.of(new LayerDependencyRule(), new EncapsulationRule());
 	}
 
 	public boolean check() {

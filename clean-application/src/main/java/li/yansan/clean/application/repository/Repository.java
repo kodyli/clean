@@ -1,5 +1,7 @@
 package li.yansan.clean.application.repository;
 
+import li.yansan.clean.application.Actor;
+
 /**
  * Defines the contract for interacting with the database.
  *
@@ -27,5 +29,9 @@ package li.yansan.clean.application.repository;
 public interface Repository<UPayload, UBody> {
 
 	RepositoryResponse<UBody> send(RepositoryRequest<UPayload> request);
+
+	default UBody send(Actor actor, UPayload payload) {
+		return send(new RepositoryRequest<>(actor, payload)).body();
+	}
 
 }

@@ -1,8 +1,10 @@
 package li.yansan.clean.commons.validation.internal.constraintvalidators;
 
+import java.util.regex.Pattern;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.util.regex.Pattern;
+
 import li.yansan.clean.commons.validation.constraints.SSN;
 
 public class SSNValidator implements ConstraintValidator<SSN, CharSequence> {
@@ -18,7 +20,7 @@ public class SSNValidator implements ConstraintValidator<SSN, CharSequence> {
 		if (value == null || value.isEmpty() || value.toString().isBlank()) {
 			return true;
 		}
-		return pattern.matcher(value).matches();
+		return this.pattern.matcher(value).matches();
 	}
 
 }

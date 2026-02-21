@@ -37,7 +37,7 @@ import li.yansan.clean.commons.validation.Validator;
  * @param <UPayload> the type of the use case payload
  * @param <UBody> the type of the use case response body
  */
-public abstract class RepositoryBase<TI, TO, UPayload, UBody> implements Repository<UPayload, UBody> {
+public abstract class AbstractRepository<TI, TO, UPayload, UBody> implements Repository<UPayload, UBody> {
 
 	public RepositoryResponse<UBody> send(RepositoryRequest<UPayload> request) {
 		Objects.requireNonNull(request, "RepositoryRequest can not be null.");

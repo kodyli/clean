@@ -1,7 +1,6 @@
 package li.yansan.clean.test.internal.rules;
 
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
-
+import com.tngtech.archunit.library.Architectures;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.lang.ArchRule;
 
@@ -16,7 +15,8 @@ public class LayerDependencyRule implements Rule {
 	}
 
 	protected ArchRule getRule() {
-		return layeredArchitecture().consideringOnlyDependenciesInAnyPackage("..")
+		return Architectures.layeredArchitecture()
+			.consideringOnlyDependenciesInAnyPackage("..")
 
 			// Defines the structure based on package segment names
 			.layer("UseCase")

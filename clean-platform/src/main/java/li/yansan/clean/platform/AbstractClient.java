@@ -8,7 +8,7 @@ import li.yansan.clean.application.client.ClientRequest;
 import li.yansan.clean.application.client.ClientResponse;
 import li.yansan.clean.commons.validation.Validator;
 
-public abstract class ClientBase<TI, TO, UPayload, UBody> implements Client<UPayload, UBody> {
+public abstract class AbstractClient<TI, TO, UPayload, UBody> implements Client<UPayload, UBody> {
 
 	public ClientResponse<UBody> send(ClientRequest<UPayload> request) {
 		Objects.requireNonNull(request, "ClientRequest can not be null.");

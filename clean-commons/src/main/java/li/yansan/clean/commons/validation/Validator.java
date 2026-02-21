@@ -1,11 +1,11 @@
 package li.yansan.clean.commons.validation;
 
-import static jakarta.validation.Validation.buildDefaultValidatorFactory;
-
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.ValidatorFactory;
 import java.util.Set;
+
+import jakarta.validation.Validation;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolationException;
 
 public abstract class Validator {
 
@@ -16,7 +16,7 @@ public abstract class Validator {
 	static {
 		// Create factory once and keep it alive for application lifetime
 		// Per Jakarta Validation spec, the factory should not be closed immediately
-		VALIDATOR_FACTORY = buildDefaultValidatorFactory();
+		VALIDATOR_FACTORY = Validation.buildDefaultValidatorFactory();
 		VALIDATOR = VALIDATOR_FACTORY.getValidator();
 
 		// Register shutdown hook to properly close factory on JVM shutdown

@@ -1,4 +1,4 @@
-package li.yansan.clean.application;
+package li.yansan.clean.usecase;
 
 /**
  * Represents the actor initiating a use case (e.g., user, system).

@@ -1,4 +1,4 @@
-package li.yansan.clean.usecase.handler;
+package li.yansan.clean.dispatcher.handler;
 
 import li.yansan.clean.usecase.Actor;
 import li.yansan.clean.usecase.UseCaseRequest;
@@ -8,10 +8,10 @@ public abstract class AbstractHandler<UPayload, UBody> implements Handler<UPaylo
 
 	@Override
 	public boolean support(UseCaseRequest<UPayload> request) {
-		Validate.notNull(request, "");
-		return support(request.actor(), request.payload());
+		Validate.notNull(request, "Cannot support a null request. Check the caller of %s", this.getClass().getSimpleName());
+		return doSupport(request.actor(), request.payload());
 	}
 
-	abstract protected boolean support(Actor actor, UPayload payload);
+			abstract protected boolean doSupport(Actor actor, UPayload payload);
 
 }

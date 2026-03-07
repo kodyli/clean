@@ -1,4 +1,4 @@
-package li.yansan.clean.exception;
+package li.yansan.clean.usecase.exception;
 
 /**
  * Base exception for all business rule violations in the Application Layer.

@@ -1,4 +1,4 @@
-package li.yansan.clean.messaging;
+package li.yansan.clean.usecase.messaging;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

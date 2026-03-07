@@ -1,4 +1,4 @@
-package li.yansan.clean.dispatcher.usecase;
+package li.yansan.clean.dispatcher;
 
 import java.util.List;
 import java.util.PriorityQueue;

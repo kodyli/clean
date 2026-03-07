@@ -1,4 +1,4 @@
-package li.yansan.clean.repository;
+package li.yansan.clean.usecase.repository;
 
 import jakarta.validation.constraints.NotNull;
 import li.yansan.clean.usecase.Actor;

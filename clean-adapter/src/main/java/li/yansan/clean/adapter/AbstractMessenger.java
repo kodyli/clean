@@ -1,11 +1,11 @@
-package li.yansan.clean.platform;
+package li.yansan.clean.adapter;
 
 import java.util.Objects;
 
-import li.yansan.clean.application.Actor;
-import li.yansan.clean.application.messaging.Messenger;
-import li.yansan.clean.application.messaging.MessengerRequest;
-import li.yansan.clean.application.messaging.MessengerResponse;
+import li.yansan.clean.usecase.Actor;
+import li.yansan.clean.usecase.messaging.Messenger;
+import li.yansan.clean.usecase.messaging.MessengerRequest;
+import li.yansan.clean.usecase.messaging.MessengerResponse;
 import li.yansan.clean.commons.validation.Validator;
 
 /**
@@ -28,7 +28,7 @@ import li.yansan.clean.commons.validation.Validator;
  * <li><b>Send Input:</b> Sends the converted input to the external system via the
  * {@link #process(Object)} method.
  * <li><b>Map Output:</b> Converts the infrastructure output ({@code TO}) back into the
- * application domain format ({@code UBody}).
+ * usecase domain format ({@code UBody}).
  * <li><b>Return Output:</b> Returns a {@link MessengerResponse} containing the result.
  * </ul>
  *

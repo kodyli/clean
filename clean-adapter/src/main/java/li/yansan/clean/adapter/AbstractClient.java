@@ -1,11 +1,11 @@
-package li.yansan.clean.platform;
+package li.yansan.clean.adapter;
 
 import java.util.Objects;
 
-import li.yansan.clean.application.Actor;
-import li.yansan.clean.application.client.Client;
-import li.yansan.clean.application.client.ClientRequest;
-import li.yansan.clean.application.client.ClientResponse;
+import li.yansan.clean.usecase.Actor;
+import li.yansan.clean.usecase.client.Client;
+import li.yansan.clean.usecase.client.ClientRequest;
+import li.yansan.clean.usecase.client.ClientResponse;
 import li.yansan.clean.commons.validation.Validator;
 
 public abstract class AbstractClient<TI, TO, UPayload, UBody> implements Client<UPayload, UBody> {

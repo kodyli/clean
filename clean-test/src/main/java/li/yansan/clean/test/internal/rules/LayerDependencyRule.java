@@ -22,7 +22,7 @@ public class LayerDependencyRule implements Rule {
 			.layer("UseCase")
 			.definedBy("..usecase..")
 			.layer("Platform")
-			.definedBy("..platform..")
+			.definedBy("..adapter..")
 
 			// Specifies allowed dependencies
 			.whereLayer("Platform")

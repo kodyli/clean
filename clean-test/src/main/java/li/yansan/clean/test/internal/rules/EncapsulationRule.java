@@ -14,7 +14,7 @@ public class EncapsulationRule implements Rule {
 	protected ArchRule getRule() {
 		return ArchRuleDefinition.classes()
 			.that()
-			.resideInAPackage("..platform..")
+			.resideInAPackage("..adapter..")
 			.and()
 			.areTopLevelClasses()
 			.and()
@@ -25,7 +25,7 @@ public class EncapsulationRule implements Rule {
 			.areNotRecords()
 			.should()
 			.bePackagePrivate()
-			.as("Concrete classes in the 'platform' layer should be package-private to enforce encapsulation.");
+			.as("Concrete classes in the 'adapter' layer should be package-private to enforce encapsulation.");
 	}
 
 }

@@ -1,11 +1,11 @@
-package li.yansan.clean.platform;
+package li.yansan.clean.adapter;
 
 import java.util.Objects;
 
-import li.yansan.clean.application.Actor;
-import li.yansan.clean.application.repository.Repository;
-import li.yansan.clean.application.repository.RepositoryRequest;
-import li.yansan.clean.application.repository.RepositoryResponse;
+import li.yansan.clean.usecase.Actor;
+import li.yansan.clean.usecase.repository.Repository;
+import li.yansan.clean.usecase.repository.RepositoryRequest;
+import li.yansan.clean.usecase.repository.RepositoryResponse;
 import li.yansan.clean.commons.validation.Validator;
 
 /**
@@ -27,8 +27,8 @@ import li.yansan.clean.commons.validation.Validator;
  * NOT business validation.
  * <li><b>Send Input:</b> Sends the converted input to the database via the
  * {@link #process(Object)} method.
- * <li><b>Map Output:</b> Converts the database output ({@code TO}) back into the
- * application domain format ({@code UBody}).
+ * <li><b>Map Output:</b> Converts the database output ({@code TO}) back into the usecase
+ * domain format ({@code UBody}).
  * <li><b>Return Output:</b> Returns a {@link RepositoryResponse} containing the result.
  * </ul>
  *

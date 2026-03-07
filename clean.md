@@ -69,7 +69,7 @@ When data crosses a layer boundary, it must take the form most convenient for th
 
 ### Transaction Boundary Ownership
 
-Use Cases must **never** open or manage transactions. Transactional demarcation belongs to the delivery mechanism (e.g., a Service class in the Spring module), which wraps the Use Case invocation. This ensures business logic remains portable and reusable outside any specific framework.
+Use Cases are business transactions, but they must **never** open or manage database transactions. Transactional demarcation belongs to the delivery mechanism (e.g., a Service class in the Spring module), which wraps the Use Case invocation. This ensures business logic remains portable and reusable outside any specific framework.
 
 ---
 
@@ -196,7 +196,7 @@ myapp/
 │             │     │    ├── BasePaymentClient.java
 │             │     │    └── LocalPaymentClient.java
 │             │     └── messaging/
-│             │          ├── BaseOrderCreatedMessenger.java  
+│             │          ├── BaseOrderCreatedMessenger.java
 │             │          └── SystemOutOrderCreatedMessenger.java
 │             └── application/                      # ← INNER CIRCLE (pure Java, no frameworks)
 │                   ├── Order.java
@@ -257,7 +257,7 @@ myapp/
 6.  **Test**: See Section 7 for the use case testing strategy.
 
 ### Step 2: Implement the Platform (Platform)
-1.  **Bridge the Boundary**: Create abstract adapter classes in the `platform` package that implement your adapters (from Step 1). 
+1.  **Bridge the Boundary**: Create abstract adapter classes in the `platform` package that implement your adapters (from Step 1).
 2.  **Add to Aggregator**: Add the new use case module to the `myapp-core` aggregator.
 3.  **Implement Runtime Adapters**: Inside your delivery mechanism module (e.g., `myapp-spring-api`), provide concrete classes extending the abstract adapters (e.g., a JPA repository or a REST client).
 4.  **Wiring**: Wire these adapters using your framework (e.g., Spring Beans) ONLY in the delivery/platform layer.

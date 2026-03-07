@@ -6,26 +6,19 @@
     <parent>
         <groupId>li.yansan.clean</groupId>
         <artifactId>parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>clean-commons</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <jakarta.validation.version>3.1.1</jakarta.validation.version>
-        <hibernate-validator.version>8.0.3.Final</hibernate-validator.version>
-        <jakarta.el.version>4.0.2</jakarta.el.version>
-        <apache.commons.version>3.18.0</apache.commons.version>
-    </properties>
     <dependencies>
         <!-- Jakarta Validation API: Provides @NotNull, @Valid, etc. annotations -->
         <!-- This is the specification API for bean validation -->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>${jakarta.validation.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -34,7 +27,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
         </dependency>
 
         <!-- Jakarta Expression Language: Required for validation message interpolation -->
@@ -42,7 +34,6 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.el</artifactId>
-            <version>${jakarta.el.version}</version>
         </dependency>
 
         <!-- Apache Commons Lang: Utility library for String, Object, and Array operations -->
@@ -50,7 +41,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.commons.version}</version>
+        </dependency>
+        <!-- Apache Commons Logging: Logging facade used for internal framework logging -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

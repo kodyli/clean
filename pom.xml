@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>li.yansan.clean</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Clean</name>
     <description>Building Clean Architecture applications</description>
     <modules>
         <module>clean-commons</module>
-        <module>clean-application</module>
-        <module>clean-platform</module>
+        <module>clean-use-case</module>
+        <module>clean-adapter</module>
         <module>clean-core</module>
         <module>clean-test</module>
     </modules>
@@ -32,37 +32,150 @@
         <maven-checkstyle-plugin.failOnViolation>true</maven-checkstyle-plugin.failOnViolation>
         <puppycrawl-tools-checkstyle.version>9.3</puppycrawl-tools-checkstyle.version>
         <spring-javaformat-checkstyle.version>0.0.47</spring-javaformat-checkstyle.version>
+        <commons-logging.version>1.3.5</commons-logging.version>
+
+        <!-- Sub-module External Dependencies -->
+        <jakarta.validation.version>3.1.1</jakarta.validation.version>
+        <hibernate-validator.version>8.0.3.Final</hibernate-validator.version>
+        <jakarta.el.version>4.0.2</jakarta.el.version>
+        <apache.commons.version>3.18.0</apache.commons.version>
+        <archunit.version>1.4.1</archunit.version>
+
+        <!-- Maven Plugins -->
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Internal Modules -->
+            <!-- Provides shared utilities, validations, and foundational classes used across all modules -->
+            <dependency>
+                <groupId>li.yansan.clean</groupId>
+                <artifactId>clean-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- Defines core business logic and use case interfaces; the application layer -->
+            <dependency>
+                <groupId>li.yansan.clean</groupId>
+                <artifactId>clean-use-case</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- Implements external system integrations (e.g., databases, APIs) interfacing with the application layer -->
+            <dependency>
+                <groupId>li.yansan.clean</groupId>
+                <artifactId>clean-adapter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- External Dependencies -->
+            <!-- Apache Commons Logging: A logging bridge allowing configurable selection of underlying logging backends -->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+            </dependency>
+            <!-- Jakarta Bean Validation API: Standard interface for JavaBean validation (e.g., @NotNull, @Size) -->
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation.version}</version>
+            </dependency>
+            <!-- Hibernate Validator: The reference implementation for Jakarta Bean Validation API -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+            <!-- Jakarta Expression Language: Required by Hibernate Validator for dynamic message interpolation -->
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>jakarta.el</artifactId>
+                <version>${jakarta.el.version}</version>
+            </dependency>
+            <!-- Apache Commons Lang: Provides highly reusable utility methods for core Java API (like StringUtils) -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons.version}</version>
+            </dependency>
+            <!-- ArchUnit: Java architecture testing library for enforcing architectural rules via unit tests -->
+            <dependency>
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit</artifactId>
+                <version>${archunit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Centralized configuration for Maven Plugins -->
+                <!-- Maven Compiler Plugin: Compiles the Java source files using the specified Java version -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <!-- Maven Surefire Plugin: Executes application unit tests during the build test phase -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <!-- Maven Resources Plugin: Handles copying of project resources to the output directory -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <!-- Spring Java Format Plugin: Enforces Spring team's Java code formatting conventions -->
+                <plugin>
+                    <groupId>io.spring.javaformat</groupId>
+                    <artifactId>spring-javaformat-maven-plugin</artifactId>
+                    <version>${spring-javaformat-maven-plugin.version}</version>
+                </plugin>
+                <!-- Maven Checkstyle Plugin: Executes code style checks and ensures adherence to best practices -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                </plugin>
+                <!-- Maven Source Plugin: Builds a JAR archive containing the project's source code -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
+                <!-- Maven Javadoc Plugin: Generates API documentation in HTML format from Javadoc comments -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
-            <!-- Maven Compiler Plugin: Compiles Java source code -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <!-- Use 'release' instead of 'source' and 'target' for better compatibility -->
-                    <release>${java.version}</release>
-                    <compilerArgs>
-                        <!-- Preserve parameter names in bytecode for Spring, Jackson, etc. -->
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <!-- Spring Java Format Plugin: Enforces Spring code style conventions -->
+            <!-- Global executions applied to all modules -->
+            <!-- Spring Java Format Plugin: Automatically formats code during the 'validate' phase (before compilation) -->
             <plugin>
                 <groupId>io.spring.javaformat</groupId>
                 <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <version>${spring-javaformat-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <!-- Validates code formatting during the validate phase -->
-                        <!-- Run 'mvn spring-javaformat:apply' to auto-format code -->
                         <phase>validate</phase>
                         <inherited>true</inherited>
                         <goals>
-                            <goal>validate</goal>
+                            <goal>apply</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -70,7 +183,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
@@ -98,6 +210,35 @@
                         </configuration>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Sources and Javadoc Generation -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <!-- Suppress Javadoc linting for faster builds if desired -->
+                    <doclint>none</doclint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>

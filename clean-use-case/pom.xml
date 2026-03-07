@@ -10,34 +10,22 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>clean-core</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>clean-use-case</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- Clean Commons: Shared utilities, validation, and common types -->
-        <!-- Foundation layer used by all other modules -->
+        <!-- Scope 'provided' - expected to be provided by the runtime environment -->
         <dependency>
             <groupId>li.yansan.clean</groupId>
             <artifactId>clean-commons</artifactId>
-        </dependency>
-
-        <!-- Clean Application: Application layer with use cases and business logic -->
-        <!-- Defines interfaces that adapters implement -->
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-use-case</artifactId>
-        </dependency>
-
-        <!-- Clean Platform: Infrastructure layer with external system integrations -->
-        <!-- Implements usecase interfaces for databases, APIs, etc. -->
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-adapter</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- Apache Commons Logging: Logging facade used for internal framework logging -->
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

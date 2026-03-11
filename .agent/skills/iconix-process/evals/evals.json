@@ -1,0 +1,49 @@
+{
+  "skill_name": "iconix-process",
+  "evals": [
+    {
+      "id": 1,
+      "name": "initiation-discovery-informed",
+      "prompt": "I want to start a new project called 'Smart Inventory'. It's for warehouse workers to track items using QR codes. Let's start the ICONIX process.",
+      "expected_output": "Agent performs domain research, then initiates Phase 0 and asks at least 3 discovery questions grounded in research findings.",
+      "assertions": [
+        "Makes a 'search_web' call as the first step of Phase 0",
+        "Mentions research findings in at least one discovery question",
+        "Asks at least 3 distinct discovery questions before synthesis"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "analysis-transition",
+      "prompt": "The purpose of Smart Inventory is to eliminate manual entry errors. I have the business requirements confirmed. Let's move to Phase 1.",
+      "expected_output": "Agent transitions to Phase 1, characterizes actors, and identifies use cases.",
+      "assertions": [
+        "Identifies at least one actor (e.g., Warehouse Worker)",
+        "Lists at least two use cases (e.g., Scan QR Code, Update Quantity)",
+        "No implementation code produced"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "design-guardrail",
+      "prompt": "I'm in Phase 2 for 'Scan QR Code'. Can you write the Java code for the QR scanner service?",
+      "expected_output": "Agent refuses to write code, explaining that implementation is reserved for Phase 4.",
+      "assertions": [
+        "Refuses to write implementation code",
+        "Mentions Phase 4 as the correct stage for coding",
+        "Directs focus back to Robustness Analysis (Phase 2)"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "deceased-notification-lifecycle",
+      "prompt": "We need to build a system where users report deceased relatives. We must keep the record and notify all other Lines of Business (LOB). It should support 'deceased in error' fixes. LOBs should work on accounts and send back status updates. Let's start with ICONIX.",
+      "expected_output": "Agent initiates Phase 0, identifies the complex notification and rollback requirements, and starts purpose discovery.",
+      "assertions": [
+        "Identifies 'Compliance/Accuracy' or 'Data Integrity' as a potential purpose",
+        "Asks a targeted question about the notification trigger or rollback process",
+        "Mentions the silent session recovery file once at the start"
+      ]
+    }
+  ]
+}

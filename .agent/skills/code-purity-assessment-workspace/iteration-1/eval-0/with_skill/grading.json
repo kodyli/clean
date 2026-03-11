@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies as GOOD design/Pure Code",
+      "passed": true,
+      "evidence": "Assessment explicitly states 'GOOD design (Pure Code)'."
+    },
+    {
+      "text": "Mentions explicit inputs/outputs",
+      "passed": true,
+      "evidence": "Assessment section 'Explicit Inputs and Outputs' confirms this."
+    }
+  ]
+}

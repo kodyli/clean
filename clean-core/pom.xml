@@ -6,7 +6,7 @@
     <parent>
         <groupId>li.yansan.clean</groupId>
         <artifactId>parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -29,10 +29,10 @@
         </dependency>
 
         <!-- Clean Platform: Infrastructure layer with external system integrations -->
-        <!-- Implements usecase interfaces for databases, APIs, etc. -->
+        <!-- Implements use case interfaces for databases, APIs, etc. -->
         <dependency>
             <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-adapter</artifactId>
+            <artifactId>clean-shell</artifactId>
         </dependency>
         <!-- Apache Commons Logging: Logging facade used for internal framework logging -->
         <dependency>

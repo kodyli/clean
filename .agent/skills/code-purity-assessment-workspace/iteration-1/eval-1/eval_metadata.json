@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "eval_name": "impure-hidden-io",
+  "prompt": "Evaluate the purity of this logic: A function `validateAndLogUser(userId)` that queries a database to check if the user exists, then writes a log entry to a file if validation fails, and finally returns a boolean.",
+  "assertions": [
+    {
+      "text": "Identifies as BAD design/Impure Code",
+      "passed": true,
+      "evidence": "Assessment explicitly states 'BAD design (Impure Code / Red Flags)'."
+    },
+    {
+      "text": "Mentions direct I/O operations",
+      "passed": true,
+      "evidence": "Assessment section 'Direct I/O Operations' highlights database and file system calls."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "eval_id": 0,
+  "eval_name": "pure-logic",
+  "prompt": "Evaluate the purity of this logic: A function `calculateDiscount(price, rules)` that iterates through a list of rule objects (e.g., `{type: 'percentage', value: 10}`) and returns the final price. It does not use any external state or global variables.",
+  "assertions": [
+    {
+      "text": "Identifies as GOOD design/Pure Code",
+      "passed": true,
+      "evidence": "Assessment explicitly states 'GOOD design (Pure Code)'."
+    },
+    {
+      "text": "Mentions explicit inputs/outputs",
+      "passed": true,
+      "evidence": "Assessment section 'Explicit Inputs and Outputs' confirms this."
+    }
+  ]
+}

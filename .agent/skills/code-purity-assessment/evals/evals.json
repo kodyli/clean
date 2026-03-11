@@ -1,0 +1,26 @@
+{
+  "skill_name": "code-purity-assessment",
+  "evals": [
+    {
+      "id": 0,
+      "name": "pure-logic",
+      "prompt": "Evaluate the purity of this logic: A function `calculateDiscount(price, rules)` that iterates through a list of rule objects (e.g., `{type: 'percentage', value: 10}`) and returns the final price. It does not use any external state or global variables.",
+      "expected_output": "The skill should identify this as GOOD design (Pure Code), specifically noting explicit inputs/outputs and determinism.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "impure-hidden-io",
+      "prompt": "Evaluate the purity of this logic: A function `validateAndLogUser(userId)` that queries a database to check if the user exists, then writes a log entry to a file if validation fails, and finally returns a boolean.",
+      "expected_output": "The skill should identify this as BAD design (Impure Code), highlighting direct I/O operations (database query, file logging) and potentially missing input/output clarity.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "impure-non-deterministic",
+      "prompt": "Evaluate the purity of this logic: A function `generateSessionId()` that takes no parameters and returns a string composed of the current system time (milliseconds) and a random number.",
+      "expected_output": "The skill should identify this as BAD design (Impure Code), specifically noting the lack of input and the non-deterministic nature due to system time and random number generation.",
+      "files": []
+    }
+  ]
+}

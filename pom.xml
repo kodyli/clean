@@ -7,14 +7,14 @@
 
     <groupId>li.yansan.clean</groupId>
     <artifactId>parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Clean</name>
     <description>Building Clean Architecture applications</description>
     <modules>
         <module>clean-commons</module>
         <module>clean-use-case</module>
-        <module>clean-adapter</module>
+        <module>clean-shell</module>
         <module>clean-core</module>
         <module>clean-test</module>
     </modules>
@@ -66,7 +66,7 @@
             <!-- Implements external system integrations (e.g., databases, APIs) interfacing with the application layer -->
             <dependency>
                 <groupId>li.yansan.clean</groupId>
-                <artifactId>clean-adapter</artifactId>
+                <artifactId>clean-shell</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -246,10 +246,158 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+			<id>format-check</id>
+			<activation>
+				<property>
+					<name>env.CI</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.spring.javaformat</groupId>
+						<artifactId>spring-javaformat-maven-plugin</artifactId>
+						<version>${spring-javaformat-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>format-check</id>
+								<phase>validate</phase>
+								<inherited>true</inherited>
+								<goals>
+									<goal>validate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>format-apply</id>
+			<activation>
+				<property>
+					<name>!env.CI</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.spring.javaformat</groupId>
+						<artifactId>spring-javaformat-maven-plugin</artifactId>
+						<version>${spring-javaformat-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>format-apply</id>
+								<phase>process-sources</phase>
+								<inherited>true</inherited>
+								<goals>
+									<goal>apply</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>git-hooks-setup</id>
+			<activation>
+				<property>
+					<name>!env.CI</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>3.1.1</version>
+						<executions>
+							<execution>
+								<id>setup-git-hooks</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>git</executable>
+									<arguments>
+										<argument>config</argument>
+										<argument>core.hooksPath</argument>
+										<argument>.githooks</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>checkstyle-check</id>
+			<activation>
+				<property>
+					<name>!env.BOGUS</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-checkstyle-plugin</artifactId>
+						<version>${maven-checkstyle-plugin.version}</version>
+						<dependencies>
+							<dependency>
+								<groupId>com.puppycrawl.tools</groupId>
+								<artifactId>checkstyle</artifactId>
+								<version>${puppycrawl-tools-checkstyle.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>io.spring.javaformat</groupId>
+								<artifactId>spring-javaformat-checkstyle</artifactId>
+								<version>${spring-javaformat-checkstyle.version}</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>checkstyle-validation</id>
+								<phase>process-sources</phase>
+								<inherited>true</inherited>
+								<configuration>
+									<skip>${disable.checks}</skip>
+									<configLocation>${maven.multiModuleProjectDirectory}/src/checkstyle/checkstyle.xml
+									</configLocation>
+									<headerLocation>${maven.multiModuleProjectDirectory}/src/checkstyle/checkstyle-header.txt
+									</headerLocation>
+									<includeTestSourceDirectory>true
+									</includeTestSourceDirectory>
+									<consoleOutput>true</consoleOutput>
+									<failsOnError>${maven-checkstyle-plugin.failsOnError}
+									</failsOnError>
+									<failOnViolation>
+										${maven-checkstyle-plugin.failOnViolation}
+									</failOnViolation>
+								</configuration>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+    </profiles>
+
     <distributionManagement>
         <repository>
             <id>local-repo</id>
             <url>file:///Users/yansanli/public/maven-local-repo</url>
         </repository>
     </distributionManagement>
+
 </project>

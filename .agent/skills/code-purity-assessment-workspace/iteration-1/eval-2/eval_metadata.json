@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "impure-non-deterministic",
+  "prompt": "Evaluate the purity of this logic: A function `generateSessionId()` that takes no parameters and returns a string composed of the current system time (milliseconds) and a random number.",
+  "assertions": [
+    {
+      "text": "Identifies as BAD design/Impure Code",
+      "passed": true,
+      "evidence": "Assessment explicitly states 'BAD design (Impure Code / Red Flags)'."
+    },
+    {
+      "text": "Mentions non-determinism/system time",
+      "passed": true,
+      "evidence": "Assessment section 'Non-determinism' highlights system time and random numbers."
+    }
+  ]
+}

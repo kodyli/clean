@@ -1,7 +1,17 @@
 package li.yansan.clean.commons.convert;
 
-public interface Converter<S, T> {
+/**
+ * Simple converter interface.
+ * @param <T> input type
+ * @param <U> output type
+ */
+public interface Converter<T, U> {
 
-	T convert(S source);
+    /**
+     * Converts T to U.
+     * @param data input
+     * @return output
+     */
+    U convert(T data);
 
 }

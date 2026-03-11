@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies as BAD design/Impure Code",
+      "passed": true,
+      "evidence": "Assessment explicitly states 'BAD design (Impure Code / Red Flags)'."
+    },
+    {
+      "text": "Mentions non-determinism/system time",
+      "passed": true,
+      "evidence": "Assessment section 'Non-determinism' highlights system time and random numbers."
+    }
+  ]
+}

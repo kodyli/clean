@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies as BAD design/Impure Code",
+      "passed": true,
+      "evidence": "Assessment explicitly states 'BAD design (Impure Code / Red Flags)'."
+    },
+    {
+      "text": "Mentions direct I/O operations",
+      "passed": true,
+      "evidence": "Assessment section 'Direct I/O Operations' highlights database and file system calls."
+    }
+  ]
+}

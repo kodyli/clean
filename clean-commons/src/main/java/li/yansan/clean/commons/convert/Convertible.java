@@ -2,14 +2,15 @@ package li.yansan.clean.commons.convert;
 
 /**
  * Interface for objects that can be converted to another type.
+ *
  * @param <T> target type
  */
 public interface Convertible<T> {
 
-    /**
-     * Converts to target type.
-     * @return target object
-     */
-    T convert();
+	/**
+	 * Converts to target type.
+	 * @return target object
+	 */
+	T convert();
 
 }

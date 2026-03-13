@@ -10,12 +10,37 @@
     <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Clean</name>
-    <description>Building Clean Architecture applications</description>
+    <description>Building Clean Architecture applications with Java 21</description>
+    <url>https://github.com/kodyli/clean</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>yansanli</id>
+            <name>Yansan Li</name>
+            <email>yansanli@example.com</email>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/kodyli/clean.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/kodyli/clean.git</developerConnection>
+        <url>https://github.com/kodyli/clean</url>
+    </scm>
     <modules>
         <module>clean-commons</module>
         <module>clean-use-case</module>
         <module>clean-shell</module>
-        <module>clean-core</module>
         <module>clean-test</module>
     </modules>
 
@@ -25,8 +50,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
+        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <exec-maven-plugin.version>3.1.1</exec-maven-plugin.version>
 
+        <!-- Style & Quality -->
+        <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-checkstyle-plugin.failsOnError>true</maven-checkstyle-plugin.failsOnError>
         <maven-checkstyle-plugin.failOnViolation>true</maven-checkstyle-plugin.failOnViolation>
@@ -40,12 +72,6 @@
         <jakarta.el.version>4.0.2</jakarta.el.version>
         <apache.commons.version>3.18.0</apache.commons.version>
         <archunit.version>1.4.1</archunit.version>
-
-        <!-- Maven Plugins -->
-        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
-        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
-        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -161,59 +187,41 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
                 </plugin>
+                <!-- Maven Enforcer Plugin: Enforces build environment constraints (Java/Maven version) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven-enforcer-plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
             <!-- Global executions applied to all modules -->
-            <!-- Spring Java Format Plugin: Automatically formats code during the 'validate' phase (before compilation) -->
-            <plugin>
-                <groupId>io.spring.javaformat</groupId>
-                <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <inherited>true</inherited>
-                        <goals>
-                            <goal>apply</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- Maven Enforcer Plugin: Ensures the build environment meets minimum requirements -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${puppycrawl-tools-checkstyle.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>io.spring.javaformat</groupId>
-                        <artifactId>spring-javaformat-checkstyle</artifactId>
-                        <version>${spring-javaformat-checkstyle.version}</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <configLocation>${maven.multiModuleProjectDirectory}/src/checkstyle/checkstyle.xml</configLocation>
-                    <headerLocation>${maven.multiModuleProjectDirectory}/src/checkstyle/checkstyle-header.txt</headerLocation>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <consoleOutput>true</consoleOutput>
-                    <failsOnError>${maven-checkstyle-plugin.failsOnError}</failsOnError>
-                    <failOnViolation>${maven-checkstyle-plugin.failOnViolation}</failOnViolation>
-                </configuration>
+                <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>checkstyle-validation</id>
-                        <phase>process-sources</phase>
-                        <inherited>true</inherited>
+                        <id>enforce-versions</id>
                         <goals>
-                            <goal>check</goal>
+                            <goal>enforce</goal>
                         </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.8.1</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${java.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!-- Checkstyle Plugin: Configured in 'checkstyle-check' profile -->
             <!-- Sources and Javadoc Generation -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

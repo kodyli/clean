@@ -20,12 +20,7 @@
         <dependency>
             <groupId>li.yansan.clean</groupId>
             <artifactId>clean-use-case</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-commons</artifactId>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -19,21 +19,18 @@
         <dependency>
             <groupId>li.yansan.clean</groupId>
             <artifactId>clean-commons</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Jakarta Validation API: Standard interface for JavaBean validation -->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Apache Commons Lang: Utility library used for internal validation (e.g., Validate.notNull) -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -12,16 +12,16 @@ import li.yansan.clean.commons.validation.Validator;
  * @param body the body of the response; must not be null
  */
 public record MessengerResponse<UBody>(@Valid @NotNull UBody body) {
-	public MessengerResponse(UBody body) {
-		this.body = body;
-		validate();
-	}
+  public MessengerResponse(UBody body) {
+    this.body = body;
+    validate();
+  }
 
-	public MessengerResponse(Convertible<UBody> body) {
-		this(body.convert());
-	}
+  public MessengerResponse(Convertible<UBody> body) {
+    this(body.convert());
+  }
 
-	private void validate() {
-		Validator.validate(this);
-	}
+  private void validate() {
+    Validator.validate(this);
+  }
 }

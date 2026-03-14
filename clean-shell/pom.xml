@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>li.yansan.clean</groupId>
-        <artifactId>parent</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>li.yansan.clean</groupId>
+    <artifactId>parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-    <artifactId>clean-shell</artifactId>
-    <packaging>jar</packaging>
+  <artifactId>clean-shell</artifactId>
+  <packaging>jar</packaging>
 
-    <dependencies>
-        <!-- Clean Application: Application layer interfaces and use cases -->
-        <!-- Adapters implement these interfaces to connect external systems -->
-        <!-- Scope 'provided' - expected to be provided by the runtime environment -->
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-use-case</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <!-- Clean Application: Application layer interfaces and use cases -->
+    <!-- Adapters implement these interfaces to connect external systems -->
+    <!-- Scope 'provided' - expected to be provided by the runtime environment -->
+    <dependency>
+      <groupId>li.yansan.clean</groupId>
+      <artifactId>clean-use-case</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 </project>

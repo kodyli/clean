@@ -6,13 +6,14 @@ import org.apache.commons.lang3.Validate;
 
 public abstract class AbstractHandler<UPayload, UBody> implements Handler<UPayload, UBody> {
 
-	@Override
-	public boolean support(UseCaseRequest<UPayload> request) {
-		Validate.notNull(request, "Cannot support a null request. Check the caller of %s",
-				this.getClass().getSimpleName());
-		return doSupport(request.actor(), request.payload());
-	}
+  @Override
+  public boolean support(UseCaseRequest<UPayload> request) {
+    Validate.notNull(
+        request,
+        "Cannot support a null request. Check the caller of %s",
+        this.getClass().getSimpleName());
+    return doSupport(request.actor(), request.payload());
+  }
 
-	abstract protected boolean doSupport(Actor actor, UPayload payload);
-
+  protected abstract boolean doSupport(Actor actor, UPayload payload);
 }

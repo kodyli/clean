@@ -7,10 +7,10 @@ package li.yansan.clean.commons.convert;
  */
 public interface Convertible<T> {
 
-	/**
-	 * Converts to target type.
-	 * @return target object
-	 */
-	T convert();
-
+  /**
+   * Converts to target type.
+   *
+   * @return target object
+   */
+  T convert();
 }

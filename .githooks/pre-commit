@@ -10,7 +10,7 @@ else
 fi
 
 # Run the validation
-$MVN_CMD spring-javaformat:validate checkstyle:check
+$MVN_CMD spotless:check checkstyle:check
 
 # Capture the exit code of maven
 EXIT_CODE=$?
@@ -25,7 +25,7 @@ if [ $EXIT_CODE -ne 0 ]; then
     echo "required code style rules."
     echo ""
     echo "💡 TIP: You can automatically fix many formatting issues by running:"
-    echo "   $MVN_CMD spring-javaformat:apply"
+    echo "   $MVN_CMD spotless:apply"
     echo ""
     echo "Please fix the formatting, stage your changes again, and then commit."
     echo "=========================================================================="

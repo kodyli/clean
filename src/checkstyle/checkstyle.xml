@@ -39,6 +39,10 @@
 		<property name="headerFile" value="${checkstyle.header.file}" />
 		<property name="fileExtensions" value="java" />
 	</module>
+	<module name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck">
+		<property name="max" value="120" />
+		<property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
+	</module>
 	<!--<module name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck" />-->
 
 	<!-- TreeWalker Checks -->
@@ -89,16 +93,9 @@
 		</module>
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck" />
 
-		<module name="io.spring.javaformat.checkstyle.filter.RequiresOuterThisFilter"/>
-		<module name="io.spring.javaformat.checkstyle.filter.IdentCheckFilter">
-			<property name="names" value="logger"/>
-			<module name="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck">
-				<property name="checkMethods" value="false"/>
-				<property name="validateOnlyOverlapping" value="false"/>
-			</module>
-		</module>
-		<module name="io.spring.javaformat.checkstyle.check.SpringNoThisCheck">
-			<property name="names" value="logger"/>
+		<module name="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck">
+			<property name="checkMethods" value="false"/>
+			<property name="validateOnlyOverlapping" value="false"/>
 		</module>
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInEnumerationCheck"/>
@@ -165,12 +162,7 @@
 		<module name="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck" />
 
 		<!-- Regexp -->
-		<module name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck">
-			<property name="format" value="^\t* +\t*\S" />
-			<property name="message"
-					  value="Line has leading space characters; indentation should be performed with tabs only." />
-			<property name="ignoreComments" value="true" />
-		</module>
+		<!-- Indentation handled by Spotless -->
 <!--		<module name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck">-->
 <!--			<property name="maximum" value="0"/>-->
 <!--			<property name="format" value="org\.mockito\.Mockito\.(when|doThrow|doAnswer)" />-->
@@ -201,12 +193,16 @@
 		<module name="com.puppycrawl.tools.checkstyle.checks.whitespace.ParenPadCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.whitespace.TypecastParenPadCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck" />
-		<module name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAroundCheck" />
-
-		<!-- Spring Conventions -->
-		<module name="io.spring.javaformat.checkstyle.check.SpringLambdaCheck">
-			<property name="singleArgumentParentheses" value="false"/>
+		<module name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAroundCheck">
+			<property name="allowEmptyConstructors" value="true" />
+			<property name="allowEmptyMethods" value="true" />
+			<property name="allowEmptyTypes" value="true" />
+			<property name="allowEmptyLoops" value="true" />
+			<property name="allowEmptyLambdas" value="true" />
+			<property name="allowEmptyCatches" value="true" />
 		</module>
+
+		<!-- Spotless handles lambda formatting -->
 <!--		<module name="io.spring.javaformat.checkstyle.check.SpringCatchCheck"/>-->
 <!--		<module name="io.spring.javaformat.checkstyle.check.SpringJavadocCheck"/>-->
 <!--		<module name="io.spring.javaformat.checkstyle.check.SpringJUnit5Check"/>-->

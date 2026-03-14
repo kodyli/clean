@@ -4,6 +4,5 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 
 public interface Rule {
 
-	void check(JavaClasses javaClasses);
-
+  void check(JavaClasses javaClasses);
 }

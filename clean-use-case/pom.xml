@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>li.yansan.clean</groupId>
-        <artifactId>parent</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>li.yansan.clean</groupId>
+    <artifactId>parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-    <artifactId>clean-use-case</artifactId>
-    <packaging>jar</packaging>
+  <artifactId>clean-use-case</artifactId>
+  <packaging>jar</packaging>
 
-    <dependencies>
-        <!-- Clean Commons: Shared utilities, validation, and common types -->
-        <!-- Scope 'provided' - expected to be provided by the runtime environment -->
-        <dependency>
-            <groupId>li.yansan.clean</groupId>
-            <artifactId>clean-commons</artifactId>
-        </dependency>
+  <dependencies>
+    <!-- Clean Commons: Shared utilities, validation, and common types -->
+    <!-- Scope 'provided' - expected to be provided by the runtime environment -->
+    <dependency>
+      <groupId>li.yansan.clean</groupId>
+      <artifactId>clean-commons</artifactId>
+    </dependency>
 
-        <!-- Jakarta Validation API: Standard interface for JavaBean validation -->
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
+    <!-- Jakarta Validation API: Standard interface for JavaBean validation -->
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+    </dependency>
 
-        <!-- Apache Commons Lang: Utility library used for internal validation (e.g., Validate.notNull) -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-    </dependencies>
+    <!-- Apache Commons Lang: Utility library used for internal validation (e.g., Validate.notNull) -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+  </dependencies>
 </project>

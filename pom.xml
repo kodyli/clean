@@ -190,6 +190,7 @@
                 <excludes>
                   <exclude>**/pom.xml</exclude>
                   <exclude>**/checkstyle-suppressions.xml</exclude>
+                  <exclude>**/target/**</exclude>
                 </excludes>
                 <eclipseWtp>
                   <type>XML</type>

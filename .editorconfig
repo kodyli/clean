@@ -14,10 +14,9 @@ trim_trailing_whitespace = true
 ij_java_use_tab_character = true
 ij_java_smart_tabs = false
 
-# Matches your ImportOrder: java, javax, jakarta, *, org.springframework
-# This also handles your static import preference
-ij_java_imports_layout = java.**, $*, javax.**, $*, jakarta.**, $*, *, $*, org.springframework.**, $*, static **
-
+# Matches Google Java Format (Spotless default)
+# All static imports first, then all non-static imports in one block
+ij_java_imports_layout = static **, *
 # Matches your AvoidStarImportCheck (prevents IntelliJ from using .*)
 ij_java_names_count_to_use_import_with_asterisk = 99
 ij_java_static_names_count_to_use_import_with_asterisk = 99

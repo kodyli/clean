@@ -81,6 +81,9 @@
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck">
+			<property name="max" value="3" />
+		</module>
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.coding.NestedForDepthCheck">
 			<property name="max" value="3" />

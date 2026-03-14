@@ -181,6 +181,35 @@
                 <expandEmptyElements>false</expandEmptyElements>
               </sortPom>
             </pom>
+            <formats>
+              <format>
+                <!-- Format XML files but exclude pom.xml (handled by <pom>) and checkstyle suppressions -->
+                <includes>
+                  <include>**/*.xml</include>
+                </includes>
+                <excludes>
+                  <exclude>**/pom.xml</exclude>
+                  <exclude>**/checkstyle-suppressions.xml</exclude>
+                </excludes>
+                <eclipseWtp>
+                  <type>XML</type>
+                </eclipseWtp>
+              </format>
+              <format>
+                <!-- Format YAML files -->
+                <includes>
+                  <include>**/*.yml</include>
+                  <include>**/*.yaml</include>
+                </includes>
+                <prettier>
+                  <config>
+                    <printWidth>100</printWidth>
+                    <singleQuote>true</singleQuote>
+                    <tabWidth>2</tabWidth>
+                  </config>
+                </prettier>
+              </format>
+            </formats>
           </configuration>
         </plugin>
         <!-- Maven Checkstyle Plugin: Executes code style checks and ensures adherence to best practices -->

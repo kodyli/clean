@@ -1,7 +1,10 @@
-package li.yansan.clean.usecase.messaging;
+package li.yansan.clean.shell;
 
 import java.util.HashMap;
 import java.util.Map;
+import li.yansan.clean.usecase.messaging.Messenger;
+import li.yansan.clean.usecase.messaging.MessengerRequest;
+import li.yansan.clean.usecase.messaging.MessengerResponse;
 
 public class ConsoleMessenger<UPayload, UBody> implements Messenger<UPayload, UBody> {
 

@@ -1,7 +1,10 @@
-package li.yansan.clean.usecase.repository;
+package li.yansan.clean.shell;
 
 import java.util.HashMap;
 import java.util.Map;
+import li.yansan.clean.usecase.repository.Repository;
+import li.yansan.clean.usecase.repository.RepositoryRequest;
+import li.yansan.clean.usecase.repository.RepositoryResponse;
 
 public class InMemoryRepository<UPayload, UBody> implements Repository<UPayload, UBody> {
 

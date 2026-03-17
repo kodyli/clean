@@ -41,15 +41,35 @@ public interface Repository<UPayload, UBody> {
    *       back into the use case body.
    * </ol>
    *
-   * <p>Example implementation:
+   * <p>Example implementation using the Adapter pattern with JpaRepository:
    *
    * <pre>{@code
-   * @Override
-   * public RepositoryResponse<UBody> send(RepositoryRequest<UPayload> request) {
-   *   TI dbRequest = convertPayload(request.actor(), request.payload());
-   *   TO dbResponse = execute(dbRequest);
-   *   UBody body = convertBody(dbResponse);
-   *   return new RepositoryResponse<>(body);
+   * public class UserRepository implements Repository<UserPayload, UserBody> {
+   *   private final UserJpaRepository jpaRepository;
+   *
+   *   public UserRepository(UserJpaRepository jpaRepository) {
+   *     this.jpaRepository = jpaRepository;
+   *   }
+   *
+   *   @Override
+   *   public RepositoryResponse<UserBody> send(RepositoryRequest<UserPayload> request) {
+   *     UserEntity entity = convertPayload(request.actor(), request.payload());
+   *     UserEntity savedEntity = execute(entity);
+   *     UserBody body = convertBody(savedEntity);
+   *     return new RepositoryResponse<>(body);
+   *   }
+   *
+   *   protected UserEntity convertPayload(Actor actor, UserPayload payload) {
+   *     // Conversion logic using Actor and payload...
+   *   }
+   *
+   *   protected UserEntity execute(UserEntity entity) {
+   *     return jpaRepository.save(entity);
+   *   }
+   *
+   *   protected UserBody convertBody(UserEntity entity) {
+   *     // Conversion logic using entity...
+   *   }
    * }
    * }</pre>
    *

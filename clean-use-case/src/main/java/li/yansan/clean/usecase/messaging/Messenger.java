@@ -26,15 +26,35 @@ public interface Messenger<UPayload, UBody> {
    *       response back into the use case body.
    * </ol>
    *
-   * <p>Example implementation:
+   * <p>Example implementation using the Adapter pattern with KafkaTemplate:
    *
    * <pre>{@code
-   * @Override
-   * public MessengerResponse<UBody> send(MessengerRequest<UPayload> request) {
-   *   TI notificationRequest = convertPayload(request.actor(), request.payload());
-   *   TO notificationResponse = execute(notificationRequest);
-   *   UBody body = convertBody(notificationResponse);
-   *   return new MessengerResponse<>(body);
+   * public class UserMessenger implements Messenger<UserPayload, UserBody> {
+   *   private final KafkaTemplate<String, Object> kafkaTemplate;
+   *
+   *   public UserMessenger(KafkaTemplate<String, Object> kafkaTemplate) {
+   *     this.kafkaTemplate = kafkaTemplate;
+   *   }
+   *
+   *   @Override
+   *   public MessengerResponse<UserBody> send(MessengerRequest<UserPayload> request) {
+   *     UserEvent event = convertPayload(request.actor(), request.payload());
+   *     SendResult<String, Object> result = execute(event);
+   *     UserBody body = convertBody(result);
+   *     return new MessengerResponse<>(body);
+   *   }
+   *
+   *   protected UserEvent convertPayload(Actor actor, UserPayload payload) {
+   *     // Conversion logic using Actor and payload...
+   *   }
+   *
+   *   protected SendResult<String, Object> execute(UserEvent event) {
+   *     return kafkaTemplate.send("user-topic", event).get(); // Simplified for example
+   *   }
+   *
+   *   protected UserBody convertBody(SendResult<String, Object> result) {
+   *     // Conversion logic using SendResult...
+   *   }
    * }
    * }</pre>
    *

@@ -26,15 +26,35 @@ public interface Client<UPayload, UBody> {
    *       back into the use case body.
    * </ol>
    *
-   * <p>Example implementation:
+   * <p>Example implementation using the Adapter pattern with RestTemplate:
    *
    * <pre>{@code
-   * @Override
-   * public ClientResponse<UBody> send(ClientRequest<UPayload> request) {
-   *   TI apiRequest = convertPayload(request.actor(), request.payload());
-   *   TO apiResponse = execute(apiRequest);
-   *   UBody body = convertBody(apiResponse);
-   *   return new ClientResponse<>(body);
+   * public class UserClient implements Client<UserPayload, UserBody> {
+   *   private final RestTemplate restTemplate;
+   *
+   *   public UserClient(RestTemplate restTemplate) {
+   *     this.restTemplate = restTemplate;
+   *   }
+   *
+   *   @Override
+   *   public ClientResponse<UserBody> send(ClientRequest<UserPayload> request) {
+   *     HttpEntity<ApiRequest> apiRequest = convertPayload(request.actor(), request.payload());
+   *     ResponseEntity<ApiResponse> apiResponse = execute(apiRequest);
+   *     UserBody body = convertBody(apiResponse);
+   *     return new ClientResponse<>(body);
+   *   }
+   *
+   *   protected HttpEntity<ApiRequest> convertPayload(Actor actor, UserPayload payload) {
+   *     // Conversion logic using Actor and UPayload...
+   *   }
+   *
+   *   protected ResponseEntity<ApiResponse> execute(HttpEntity<ApiRequest> request) {
+   *     return restTemplate.postForEntity("/api/users", request, ApiResponse.class);
+   *   }
+   *
+   *   protected UserBody convertBody(ResponseEntity<ApiResponse> response) {
+   *     // Conversion logic using apiResponse...
+   *   }
    * }
    * }</pre>
    *

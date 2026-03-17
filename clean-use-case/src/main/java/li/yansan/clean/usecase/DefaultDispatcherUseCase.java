@@ -1,11 +1,9 @@
-package li.yansan.clean.dispatcher;
+package li.yansan.clean.usecase;
 
 import java.util.ArrayList;
 import java.util.List;
-import li.yansan.clean.dispatcher.handler.Handler;
-import li.yansan.clean.dispatcher.handler.UnsupportedHandlerException;
-import li.yansan.clean.usecase.UseCaseRequest;
-import li.yansan.clean.usecase.UseCaseResponse;
+import li.yansan.clean.usecase.handler.Handler;
+import li.yansan.clean.usecase.handler.UnsupportedHandlerException;
 import org.apache.commons.lang3.Validate;
 
 public class DefaultDispatcherUseCase<UPayload, UBody>

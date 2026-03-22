@@ -1,8 +1,9 @@
-package li.yansan.clean.usecase;
+package li.yansan.clean.dispatcure;
 
 import java.util.List;
 import java.util.PriorityQueue;
-import li.yansan.clean.usecase.handler.Handler;
+import li.yansan.clean.dispatcure.handler.Handler;
+import li.yansan.clean.usecase.UseCase;
 import org.apache.commons.lang3.Validate;
 
 /**

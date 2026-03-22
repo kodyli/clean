@@ -1,4 +1,4 @@
-package li.yansan.clean.usecase.handler;
+package li.yansan.clean.dispatcure.handler;
 
 import li.yansan.clean.usecase.Actor;
 import li.yansan.clean.usecase.UseCaseRequest;

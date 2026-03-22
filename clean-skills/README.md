@@ -15,8 +15,8 @@ The project follows the **Clean Architecture** pattern to decouple the Maven-spe
 
 ```mermaid
 graph TD
+    Test[InstallSkillUseCaseTest] -->|Request| UseCase[InstallSkillUseCase]
     Mojo[InstallSkillMojo] -->|Request| UseCase[InstallSkillUseCase]
-    Test[DefaultInstallSkillUseCaseTest] -->|Request| UseCase[InstallSkillUseCase]
     UseCase -->|Implementation| DefaultUseCase[DefaultInstallSkillUseCase]
     DefaultUseCase -->|Plugins| SkillRepo[SkillRepository]
     SkillRepo -->|JAR| JarRepo[JarSkillRepository]

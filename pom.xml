@@ -33,6 +33,7 @@
     <module>clean-use-case</module>
     <module>clean-shell</module>
     <module>clean-test</module>
+    <module>clean-skills</module>
   </modules>
 
   <scm>

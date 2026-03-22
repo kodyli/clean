@@ -16,15 +16,17 @@ The project follows the **Clean Architecture** pattern to decouple the Maven-spe
 ```mermaid
 graph TD
     Mojo[InstallSkillMojo] -->|Request| UseCase[InstallSkillUseCase]
+    Test[DefaultInstallSkillUseCaseTest] -->|Request| UseCase[InstallSkillUseCase]
     UseCase -->|Implementation| DefaultUseCase[DefaultInstallSkillUseCase]
-    DefaultUseCase -->|Plugins| SkillSource[SkillSource]
-    SkillSource -->|Classpath| ClasspathSource[ClasspathSkillSource]
-    SkillSource -->|Upcoming| RemoteSource[RemoteSkillSource]
+    DefaultUseCase -->|Plugins| SkillRepo[SkillRepository]
+    SkillRepo -->|JAR| JarRepo[JarSkillRepository]
+    SkillRepo -->|FileSystem| FileRepo[FileSkillRepository]
+    SkillRepo -->|Upcoming| RemoteRepo[RemoteSkillRepository]
 ```
 
 - **Mojo (Interface Layer)**: Handles Maven configuration and command-line parameters.
-- **UseCase (Domain Layer)**: Orchestrates the installation flow, validates the project root, and coordinates multiple skill sources.
-- **SkillSource (Data/Infrastructure Layer)**: Abstraction for where skills are retrieved from.
+- **UseCase (Domain Layer)**: Orchestrates the installation flow, validates the project root, and coordinates multiple skill repositories.
+- **SkillRepository (Data/Infrastructure Layer)**: Abstraction for where skills are retrieved from, supporting both files and packaged JARs.
 
 ## Usage
 

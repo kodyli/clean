@@ -7,22 +7,26 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import li.yansan.clean.skill.install.usecase.repository.Skill;
+import li.yansan.clean.skill.install.usecase.repository.SkillRepository;
+import li.yansan.clean.usecase.Actor;
 import li.yansan.clean.usecase.UseCaseRequest;
 import li.yansan.clean.usecase.UseCaseResponse;
+import li.yansan.clean.usecase.repository.RepositoryRequest;
 
 public class DefaultInstallSkillUseCase implements InstallSkillUseCase {
   public static String DEFAULT_AGENT = "agent";
   public static String GITHUB_AGENT = "github";
   private final File projectDir;
-  private final List<SkillSource> skillSources;
+  private final List<SkillRepository> skillRepositories;
 
-  public DefaultInstallSkillUseCase(File projectDir) {
-    this(projectDir, List.of(new ClasspathSkillSource()));
+  public DefaultInstallSkillUseCase(File projectDir, SkillRepository skillRepository) {
+    this(projectDir, List.of(skillRepository));
   }
 
-  public DefaultInstallSkillUseCase(File projectDir, List<SkillSource> skillSources) {
+  public DefaultInstallSkillUseCase(File projectDir, List<SkillRepository> skillRepositories) {
     this.projectDir = projectDir;
-    this.skillSources = skillSources;
+    this.skillRepositories = skillRepositories;
   }
 
   @Override
@@ -35,7 +39,8 @@ public class DefaultInstallSkillUseCase implements InstallSkillUseCase {
     }
 
     String agent = !requestPayload.agent().isBlank() ? requestPayload.agent() : DEFAULT_AGENT;
-    return new UseCaseResponse<>(installSkills(requestPayload.skillNames(), agent));
+    return new UseCaseResponse<>(
+        installSkills(request.actor(), requestPayload.skillNames(), agent));
   }
 
   private boolean isRootProject(File dir) {
@@ -58,14 +63,29 @@ public class DefaultInstallSkillUseCase implements InstallSkillUseCase {
     }
   }
 
-  protected ResponseBody installSkills(Collection<String> skillNames, String agent) {
-    Path target = this.projectDir.toPath().resolve("." + agent + "/skills");
-    List<String> allInstalled = new ArrayList<>();
+  protected ResponseBody installSkills(Actor actor, Collection<String> skillNames, String agent) {
+    Path targetDir = this.projectDir.toPath().resolve("." + agent + "/skills");
+    List<String> installed = new ArrayList<>();
 
-    for (SkillSource source : this.skillSources) {
-      allInstalled.addAll(source.install(skillNames, target));
+    for (SkillRepository repository : this.skillRepositories) {
+      var request = new RepositoryRequest<>(actor, new SkillRepository.RequestPayload(skillNames));
+      var response = repository.send(request);
+
+      for (Skill skill : response.body().skills()) {
+        try {
+          Path targetPath = targetDir.resolve(skill.relativePath());
+          Files.createDirectories(targetPath.getParent());
+          Files.write(targetPath, skill.content());
+
+          if (!installed.contains(skill.name())) {
+            installed.add(skill.name());
+          }
+        } catch (IOException e) {
+          throw new RuntimeException("Failed to install skill: " + skill.name(), e);
+        }
+      }
     }
 
-    return new ResponseBody(allInstalled);
+    return new ResponseBody(installed);
   }
 }

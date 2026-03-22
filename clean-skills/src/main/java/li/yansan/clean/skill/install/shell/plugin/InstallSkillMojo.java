@@ -2,6 +2,7 @@ package li.yansan.clean.skill.install.shell.plugin;
 
 import java.io.File;
 import java.util.List;
+import li.yansan.clean.skill.install.shell.repository.JarSkillRepository;
 import li.yansan.clean.skill.install.usecase.DefaultInstallSkillUseCase;
 import li.yansan.clean.skill.install.usecase.InstallSkillUseCase;
 import li.yansan.clean.usecase.Actor;
@@ -38,7 +39,8 @@ public class InstallSkillMojo extends AbstractMojo {
 
     try {
       List<String> names = this.skillNames != null ? this.skillNames : List.of();
-      InstallSkillUseCase useCase = new DefaultInstallSkillUseCase(this.projectDir);
+      InstallSkillUseCase useCase =
+          new DefaultInstallSkillUseCase(this.projectDir, new JarSkillRepository());
       var request =
           new UseCaseRequest<>(
               new Actor("system"), new InstallSkillUseCase.RequestPayload(names, this.agent));

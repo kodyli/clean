@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.List;
 import li.yansan.clean.skill.install.usecase.DefaultInstallSkillUseCase;
 import li.yansan.clean.skill.install.usecase.InstallSkillUseCase;
+import li.yansan.clean.skill.install.usecase.repository.FileSkillRepository;
 import li.yansan.clean.usecase.Actor;
 import li.yansan.clean.usecase.UseCaseRequest;
 import li.yansan.clean.usecase.UseCaseResponse;
@@ -24,7 +25,8 @@ class DefaultInstallSkillUseCaseTest {
     Files.createDirectories(projectDir);
     Files.writeString(projectDir.resolve("pom.xml"), "<modules></modules>");
 
-    InstallSkillUseCase useCase = new DefaultInstallSkillUseCase(projectDir.toFile());
+    InstallSkillUseCase useCase =
+        new DefaultInstallSkillUseCase(projectDir.toFile(), new FileSkillRepository());
     UseCaseRequest<InstallSkillUseCase.RequestPayload> request =
         new UseCaseRequest<>(
             new Actor("test"), new InstallSkillUseCase.RequestPayload(List.of(), "github"));
@@ -42,7 +44,8 @@ class DefaultInstallSkillUseCaseTest {
     Files.createDirectories(projectDir);
     Files.writeString(projectDir.resolve("pom.xml"), "<modules></modules>");
 
-    InstallSkillUseCase useCase = new DefaultInstallSkillUseCase(projectDir.toFile());
+    InstallSkillUseCase useCase =
+        new DefaultInstallSkillUseCase(projectDir.toFile(), List.of(new FileSkillRepository()));
     UseCaseRequest<InstallSkillUseCase.RequestPayload> request =
         new UseCaseRequest<>(
             new Actor("test"), new InstallSkillUseCase.RequestPayload(List.of(), "some-agent"));
@@ -60,7 +63,8 @@ class DefaultInstallSkillUseCaseTest {
     Files.createDirectories(projectDir);
     Files.writeString(projectDir.resolve("pom.xml"), "<project></project>");
 
-    DefaultInstallSkillUseCase useCase = new DefaultInstallSkillUseCase(projectDir.toFile());
+    DefaultInstallSkillUseCase useCase =
+        new DefaultInstallSkillUseCase(projectDir.toFile(), List.of(new FileSkillRepository()));
     UseCaseRequest<InstallSkillUseCase.RequestPayload> request =
         new UseCaseRequest<>(
             new Actor("test"), new InstallSkillUseCase.RequestPayload(List.of(), "test-agent"));
